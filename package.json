@@ -1,0 +1,22 @@
+{
+  "name": "chaingrinder",
+  "version": "1.0.0",
+  "description": "A program to controll a Chain Grinder",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RickardA/ChainGrinder.git"
+  },
+  "author": "Rickard Andersson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RickardA/ChainGrinder/issues"
+  },
+  "homepage": "https://github.com/RickardA/ChainGrinder#readme",
+  "dependencies": {
+    "pigpio": "^3.2.3"
+  }
+}
