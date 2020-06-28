@@ -1,5 +1,3 @@
-const Relay = require("./relay")
-
 const Relay = require('./Relay')
 
 module.exports = class ChainGuard {

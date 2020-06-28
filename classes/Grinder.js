@@ -25,7 +25,7 @@ module.exports = class Grinder {
     }
 
     alterAngle() {
-        if (this.angleRelay.isToggledOn) {
+        if (this.angleRelay.isToggledOn()) {
             this.angleRelay.toggleOff()
         } else {
             this.angleRelay.toggleOn()

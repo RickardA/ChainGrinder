@@ -12,43 +12,50 @@ const testAnswers = {
     'RELEASE CHAIN': 5
 }
 
-const testMenu = [
-    'Alter angle of grinder',
-    'Push chain forward',
-    'Lower grinder',
-    'Lift grinder',
-    'Clamp chain',
-    'Release Chain'
-]
+const testMenu = [{
+    type: 'list',
+    name: 'testMenu',
+    message: 'What do you want to do?',
+    choices: [
+        'Alter angle of grinder',
+        'Push chain forward',
+        'Lower grinder',
+        'Lift grinder',
+        'Clamp chain',
+        'Release Chain'
+    ]
+}]
 
 const grinder = new Grinder()
 const chainGuard = new ChainGuard()
 
-function setupProgram() {
-    while (true) {
-        inquirer.prompt(testMenu).then(answer => {
-            switch (answer) {
-                case testAnswers["ALTER ANGLE"]:
+async function setupProgram() {
+    while(true) {
+       const answer = await inquirer.prompt(testMenu)
+
+            switch (answer.testMenu) {
+                case 'Alter angle of grinder':
                     grinder.alterAngle()
                     break;
-                case testAnswers["PUSH CHAIN"]:
+                case 'Push chain forward':
                     chainGuard.pushChain()
                     break;
-                case testAnswers["LOWER GRINDER"]:
+                case 'Lower grinder':
                     grinder.lower()
                     break;
-                case testAnswers["LIFT GRINDER"]:
+                case 'Lift grinder':
                     grinder.lift()
                     break;
-                case testAnswers["CLAMP CHAIN"]:
+                case 'Clamp chain':
                     chainGuard.clampChain()
                     break;
-                case testAnswers["RELEASE CHAIN"]:
+                case 'Release Chain':
                     chainGuard.releaseChain()
                     break;
             }        
-        })
+
     }
+        
 }
 
 setupProgram()
