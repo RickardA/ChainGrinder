@@ -2,6 +2,7 @@ require('dotenv').config()
 const inquirer = require('inquirer')
 const Grinder = require('./classes/Grinder')
 const ChainGuard = require('./classes/ChainGuard')
+const Gpio = require('pigpio').Gpio
 
 const testAnswers = {
     "ALTER ANGLE":  0,
@@ -59,3 +60,12 @@ async function setupProgram() {
 }
 
 setupProgram()
+
+
+const pushChainInput = new Gpio(process.env.CHAINGUARD_PUSH_INPUT_PIN,Gpio.INPUT)
+
+pushChainInput.on('alert', (level,tick) => {
+    if(level == 1) {
+        chainGuard.moveBackPusher()
+    }
+})

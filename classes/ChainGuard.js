@@ -18,4 +18,8 @@ module.exports = class ChainGuard {
     pushChain() {
         this.pushRelay.toggleOn()
     }
+
+    moveBackPusher() {
+        this.pushRelay.toggleOff()
+    }
 }
