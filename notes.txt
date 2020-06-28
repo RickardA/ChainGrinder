@@ -1,0 +1,38 @@
+Setup Mode:
+    In this mode the machine is securily going to let you setup and adjust the grinder.
+
+    You will get four button alternatives:
+        - Set the angle of the grinder
+        - Push the chain forward
+        - Lower grinder
+        - Lift grinder
+        - Test settings
+    When you press the button for setting the angle of the grinder it will just alter between left or right.
+
+    If you press the other button for pushing the cahin forward. It will push the chain forward and alter the angle of the grinder.
+
+    And if you press the lower grinder button, the grinder will be lowered until you press the lift grinder button.
+    This function is here so you can adjust the depth of the grinder
+
+    The test settings button will push the chain forward, start the grinder and grind one teeth and then shut of again.
+    This is to test that the settings the user has done, is correct.
+
+    Besides the buttons you will get a box where you can enter the amount of teeth there is on the chain.
+    You will also be able to reset the teeth counter
+Running Mode:
+    In the running mode you should have the following alternatives:
+        - Start
+        - Stop
+        - Pause / Resume
+        - Change angle of grinder
+    
+    When pressing start the following procedure should be started:
+        - Start the grinder
+        - Clamp the chain
+        - Lower the grinder
+        - Keep grinder lowered for x seconds
+        - Lift grinder
+        - Release clamp from chain
+        - Push chain forward
+        - Change grinder angle
+        - Restart from step 2
