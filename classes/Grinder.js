@@ -6,13 +6,15 @@ module.exports = class Grinder {
         this.motorRelay = new Relay(process.env.GRINDER_MOTOR_PIN,false)
         this.liftRelay = new Relay(process.env.GRINDER_LIFT_PIN,false)
         this.angleRelay = new Relay(process.env.GRINDER_ANGLE_PIN,false)
+
+        this.liftTimerIsStarted = false
     }
 
     turnOn() {
         this.motorRelay.toggleOn()
     }
 
-    turnOf() {
+    turnOff() {
         this.motorRelay.toggleOff()
     }
 
@@ -30,6 +32,14 @@ module.exports = class Grinder {
         } else {
             this.angleRelay.toggleOn()
         }
+    }
+
+    startLiftTimer() {
+        this.liftTimerIsStarted = true
+        setTimeout(() => {
+            this.liftRelay.toggleOff()
+            this.liftTimerIsStarted = false
+        }, 10000)
     }
 
 }

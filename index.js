@@ -4,15 +4,6 @@ const Grinder = require('./classes/Grinder')
 const ChainGuard = require('./classes/ChainGuard')
 const Gpio = require('pigpio').Gpio
 
-const testAnswers = {
-    "ALTER ANGLE":  0,
-    'PUSH CHAIN': 1,
-    'LOWER GRINDER': 2,
-    'LIFT GRINDER': 3,
-    'CLAMP CHAIN': 4,
-    'RELEASE CHAIN': 5
-}
-
 const testMenu = [{
     type: 'list',
     name: 'testMenu',
@@ -23,14 +14,34 @@ const testMenu = [{
         'Lower grinder',
         'Lift grinder',
         'Clamp chain',
-        'Release Chain'
+        'Release Chain',
+        'Start grinder',
+        'Turn off grinder'
     ]
 }]
 
 const grinder = new Grinder()
 const chainGuard = new ChainGuard()
 
+const pushChainInput = new Gpio(process.env.CHAINGUARD_PUSH_INPUT_PIN,{mode: Gpio.INPUT, alert: true})
+const grinderInput = new Gpio(process.env.GRINDER_LOWERED_INPUT,{mode: Gpio.INPUT, alert: true})
+
 async function setupProgram() {
+    pushChainInput.on('alert', (level,tick) => {
+        if(level == 1 && chainGuard.isPushed()) {
+            console.log('something happend')
+            chainGuard.moveBackPusher()
+        }
+    })
+
+    grinderInput.on('alert',(level,tick) => {
+        if(level == 1 && !grinder.liftTimerIsStarted) {
+            grinder.startLiftTimer()
+        }
+    })
+
+
+
     while(true) {
        const answer = await inquirer.prompt(testMenu)
 
@@ -53,6 +64,12 @@ async function setupProgram() {
                 case 'Release Chain':
                     chainGuard.releaseChain()
                     break;
+                case 'Start grinder':
+                    grinder.turnOn()
+                    break;
+                case 'Turn off grinder':
+                    grinder.turnOff()
+                    break;
             }        
 
     }
@@ -62,10 +79,5 @@ async function setupProgram() {
 setupProgram()
 
 
-const pushChainInput = new Gpio(process.env.CHAINGUARD_PUSH_INPUT_PIN,Gpio.INPUT)
 
-pushChainInput.on('alert', (level,tick) => {
-    if(level == 1) {
-        chainGuard.moveBackPusher()
-    }
-})
+

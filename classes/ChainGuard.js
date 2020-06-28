@@ -1,6 +1,6 @@
 const Relay = require('./Relay')
 
-module.exports = class ChainGuard {
+module.exports = class ChainGuard{
 
     constructor() {
         this.clampRelay = new Relay(process.env.CHAINGUARD_CLAMP_PIN,false)
@@ -21,5 +21,9 @@ module.exports = class ChainGuard {
 
     moveBackPusher() {
         this.pushRelay.toggleOff()
+    }
+
+    isPushed() {
+        return this.pushRelay.isToggledOn()
     }
 }
