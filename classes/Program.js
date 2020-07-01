@@ -3,6 +3,14 @@ const ChainGuard = require('./classes/ChainGuard')
 const Relay = require('./classes/Relay')
 const Gpio = require('pigpio').Gpio
 
+module.exports = class Program {
+
+    constructor() {
+        if(! Program.instance) {
+            
+        }
+    }
+}
 const grinder = new Grinder()
 const chainGuard = new ChainGuard()
 
