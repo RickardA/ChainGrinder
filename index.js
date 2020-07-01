@@ -20,10 +20,10 @@ async function setupProgram() {
 
             switch (answer.testMenu) {
                 case 'Alter angle of grinder':
-                    grinder.alterAngle()
+                    await program.alterGrinderAngle()
                     break;
                 case 'RED BUTTON':
-                    program.runSetupSequence()
+                    await program.runSetupSequence()
                     break;
             }        
 
@@ -31,7 +31,7 @@ async function setupProgram() {
         
 }
 
-//setupProgram()
+setupProgram()
 
 
 

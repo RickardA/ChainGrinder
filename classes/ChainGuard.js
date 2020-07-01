@@ -9,18 +9,21 @@ module.exports = class ChainGuard{
     }
 
     clampChain() {
+        console.log('Clamping chain')
         return new Promise((resolve,reject) => {
             resolve(this.clampRelay.toggleOn())
         }) 
     }
 
     releaseChain() {
+        console.log('Releasing chain')
         return new Promise((resolve,reject) => {
             resolve(this.clampRelay.toggleOff())
         })
     }
 
     pushChain() {
+        console.log('Pushing chain')
         return new Promise((resolve, reject) => {
             this.pushRelay.toggleOn()
             setTimeout( async () => {
@@ -31,6 +34,7 @@ module.exports = class ChainGuard{
     }
 
     moveBackPusher() {
+        console.log('Moving back pusher')
         return new Promise((resolve, reject) => {
             resolve(this.pushRelay.toggleOff())
         })

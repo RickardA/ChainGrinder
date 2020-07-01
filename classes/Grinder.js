@@ -11,30 +11,35 @@ module.exports = class Grinder {
     }
 
     turnOn() {
+        console.log('Starting grinder')
         return new Promise((resolve, reject) => [
             resolve(this.motorRelay.toggleOn())
         ])
     }
 
     turnOff() {
+        console.log('Stopping grinder')
         return new Promise((resolve, reject) => {
             resolve(this.motorRelay.toggleOff())
         })
     }
 
     lower() {
+        console.log('Lowering Grinder')
         return new Promise((resolve, reject) => {
             resolve(this.liftRelay.toggleOn())
         })
     }
 
     lift() {
+        console.log('Lifting grinder')
         return new Promise((resolve, reject) => {
             resolve(this.liftRelay.toggleOff())
         })
     }
 
     alterAngle() {
+        console.log('altering grinder angle')
         return new Promise((resolve, reject) => {
             if (this.angleRelay.isToggledOn()) {
                 resolve(this.angleRelay.toggleOff())
@@ -45,6 +50,7 @@ module.exports = class Grinder {
     }
 
     startLiftTimer() {
+        console.log('Starting lift timer')
         this.liftTimerIsStarted = true
         setTimeout(() => {
             this.liftRelay.toggleOff()

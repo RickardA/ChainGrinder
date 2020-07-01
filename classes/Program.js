@@ -1,6 +1,6 @@
-const Grinder = require('./classes/Grinder')
-const ChainGuard = require('./classes/ChainGuard')
-const Relay = require('./classes/Relay')
+const Grinder = require('./Grinder')
+const ChainGuard = require('./ChainGuard')
+const Relay = require('./Relay')
 const Gpio = require('pigpio').Gpio
 
 module.exports = class Program {
@@ -43,7 +43,7 @@ module.exports = class Program {
         }
     }
 
-    stopSetupSequence() {
+    async stopSetupSequence() {
         console.log('Stopping setup sequence...')
         await this.grinder.lift()
         await Promise.all([this.grinder.turnOff(), this.chainGuard.releaseChain()])
