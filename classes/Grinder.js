@@ -11,27 +11,37 @@ module.exports = class Grinder {
     }
 
     turnOn() {
-        this.motorRelay.toggleOn()
+        return new Promise((resolve, reject) => [
+            resolve(this.motorRelay.toggleOn())
+        ])
     }
 
     turnOff() {
-        this.motorRelay.toggleOff()
+        return new Promise((resolve, reject) => {
+            resolve(this.motorRelay.toggleOff())
+        })
     }
 
     lower() {
-        this.liftRelay.toggleOn()
+        return new Promise((resolve, reject) => {
+            resolve(this.liftRelay.toggleOn())
+        })
     }
 
     lift() {
-        this.liftRelay.toggleOff()
+        return new Promise((resolve, reject) => {
+            resolve(this.liftRelay.toggleOff())
+        })
     }
 
     alterAngle() {
-        if (this.angleRelay.isToggledOn()) {
-            this.angleRelay.toggleOff()
-        } else {
-            this.angleRelay.toggleOn()
-        }
+        return new Promise((resolve, reject) => {
+            if (this.angleRelay.isToggledOn()) {
+                resolve(this.angleRelay.toggleOff())
+            } else {
+                resolve(this.angleRelay.toggleOn())
+            }
+        })
     }
 
     startLiftTimer() {

@@ -5,25 +5,35 @@ module.exports = class ChainGuard{
     constructor() {
         this.clampRelay = new Relay(process.env.CHAINGUARD_CLAMP_PIN,false)
         this.pushRelay = new Relay(process.env.CHAINGUARD_PUSH_PIN,false)
+        this.isChainPusherOrigin =  true
     }
 
     clampChain() {
-        this.clampRelay.toggleOn()
+        return new Promise((resolve,reject) => {
+            resolve(this.clampRelay.toggleOn())
+        }) 
     }
 
     releaseChain() {
-        this.clampRelay.toggleOff()
+        return new Promise((resolve,reject) => {
+            resolve(this.clampRelay.toggleOff())
+        })
     }
 
     pushChain() {
-        this.pushRelay.toggleOn()
-        setTimeout(() => {
-            this.moveBackPusher()
-        },2000)
+        return new Promise((resolve, reject) => {
+            this.pushRelay.toggleOn()
+            setTimeout( async () => {
+                await this.moveBackPusher()
+                resolve('Done pushing chain')
+            },2000)
+        })
     }
 
     moveBackPusher() {
-        this.pushRelay.toggleOff()
+        return new Promise((resolve, reject) => {
+            resolve(this.pushRelay.toggleOff())
+        })
     }
 
     isPushed() {
