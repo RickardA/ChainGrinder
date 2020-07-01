@@ -17,6 +17,9 @@ module.exports = class ChainGuard{
 
     pushChain() {
         this.pushRelay.toggleOn()
+        setTimeout(() => {
+            this.moveBackPusher()
+        },2000)
     }
 
     moveBackPusher() {
