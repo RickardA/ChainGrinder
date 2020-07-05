@@ -1,8 +1,8 @@
 require('dotenv').config()
 const inquirer = require('inquirer')
-const Program = require('./classes/Program')
+const SetupProgram = require('./classes/SetupProgram')
 
-const program = new Program()
+const setupProgram = new SetupProgram()
 
 const testMenu = [{
     type: 'list',
@@ -14,16 +14,16 @@ const testMenu = [{
     ]
 }]
 
-async function setupProgram() {
+async function startSetupMenu() {
     while(true) {
        const answer = await inquirer.prompt(testMenu)
 
             switch (answer.testMenu) {
                 case 'Alter angle of grinder':
-                    await program.alterGrinderAngle()
+                    await setupProgram.alterGrinderAngle()
                     break;
                 case 'RED BUTTON':
-                    await program.runSetupSequence()
+                    await setupProgram.runSetupSequence()
                     break;
             }        
 
@@ -31,10 +31,18 @@ async function setupProgram() {
         
 }
 
-setupProgram()
+startSetupMenu()
 
 process.on('SIGINT', () => {
-    program.exit()
+    setupProgram.exit()
+})
+
+setupProgram.on('setupStarted', () => {
+    console.log('Setuuuup is started!!')
+})
+
+setupProgram.on('setupStopped', () => {
+    console.log('Setuuuup is doone!!')
 })
 
 

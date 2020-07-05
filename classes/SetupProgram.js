@@ -1,11 +1,13 @@
 const Grinder = require('./Grinder')
 const ChainGuard = require('./ChainGuard')
 const Gpio = require('pigpio').Gpio
+const EventEmitter = require('events')
 
-module.exports = class SetupProgram {
+module.exports = class SetupProgram extends EventEmitter {
 
     constructor() {
         if(! SetupProgram.instance) {
+            super()
             SetupProgram.instance = this
             this.grinder = new Grinder()
             this.chainGuard = new ChainGuard()
@@ -30,6 +32,8 @@ module.exports = class SetupProgram {
             })
 
             this.setupSequenceIsRunning = false
+
+            this.checkAndSetSequence()
         }
 
         return SetupProgram.instance
@@ -69,6 +73,7 @@ module.exports = class SetupProgram {
         await this.grinder.turnOn()
         await this.grinder.lower()
         console.log('Setup sequence done')
+        this.emit('setupStarted',true)
     }
 
     async stopSetupSequence() {
@@ -79,5 +84,6 @@ module.exports = class SetupProgram {
     async turnOffAndReleaseChain() {
         await Promise.all([this.grinder.turnOff(), this.chainGuard.releaseChain()])
         console.log('Setup sequence stopped')
+        this.emit('setupStopped',true)
     }
 }
