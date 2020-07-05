@@ -8,13 +8,15 @@ module.exports = class Grinder {
         this.angleRelay = new Relay(process.env.GRINDER_ANGLE_PIN,false)
 
         this.liftTimerIsStarted = false
+        this.isAtOrigin = true
     }
 
     turnOn() {
         console.log('Starting grinder')
-        return new Promise((resolve, reject) => [
-            resolve(this.motorRelay.toggleOn())
-        ])
+        return new Promise((resolve, reject) => {
+            this.motorRelay.toggleOn()
+            setTimeout(() => { resolve('Grinder on')},5000)
+        })
     }
 
     turnOff() {
@@ -36,6 +38,10 @@ module.exports = class Grinder {
         return new Promise((resolve, reject) => {
             resolve(this.liftRelay.toggleOff())
         })
+    }
+
+    isLowered() {
+        return this.liftRelay.isToggledOn()
     }
 
     alterAngle() {

@@ -33,6 +33,10 @@ async function setupProgram() {
 
 setupProgram()
 
+process.on('SIGINT', () => {
+    program.exit()
+})
+
 
 
 

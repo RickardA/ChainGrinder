@@ -5,7 +5,7 @@ module.exports = class ChainGuard{
     constructor() {
         this.clampRelay = new Relay(process.env.CHAINGUARD_CLAMP_PIN,false)
         this.pushRelay = new Relay(process.env.CHAINGUARD_PUSH_PIN,false)
-        this.isChainPusherOrigin =  true
+        this.pushLevel = 1
     }
 
     clampChain() {
@@ -42,5 +42,9 @@ module.exports = class ChainGuard{
 
     isPushed() {
         return this.pushRelay.isToggledOn()
+    }
+
+    isClamped() {
+        return this.clampRelay.isToggledOn()
     }
 }
