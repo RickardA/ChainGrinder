@@ -16,22 +16,6 @@ module.exports = class Program extends EventEmitter {
 
             this.pushChainInput.glitchFilter(300000)
             this.grinderInput.glitchFilter(300000)
-
-            this.pushChainInput.on('alert', (level, input) => {
-                console.log(level)
-                if(level === 0 && !this.chainGuard.isPushed()) {
-                    this.continueProgram()
-                }
-            })
-
-            this.grinderInput.on('alert', (level, input) => {
-               console.log('grinderLevel ', level,)
-                if (level == 0 && !this.grinder.isLowered()) {
-                    this.startProgram()
-                } else {
-                    this.grinder.startLiftTimer()
-                }
-            })
         }
 
         return Program.instance
@@ -50,13 +34,19 @@ module.exports = class Program extends EventEmitter {
     }
 
     async startProgram() {
-        if(this.teethCounter != 2) {
+        do {
             await this.chainGuard.releaseChain()
             await this.grinder.alterAngle()
             await this.chainGuard.pushChain()
-        } else {
-            this.emit('done', true)
-        }
+            await this.chainGuard.clampChain()
+            await this.grinder.turnOn()
+            await this.grinder.lower()
+            await this.grinder.startLiftTimer()
+            await this.grinder.turnOff()
+            console.log('One iteration done')
+        } while(this.teethCounter != 2) 
+        
+        this.emit('done', true)
     }
 
     async continueProgram() {

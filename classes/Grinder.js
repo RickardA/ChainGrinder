@@ -29,14 +29,26 @@ module.exports = class Grinder {
     lower() {
         console.log('Lowering Grinder')
         return new Promise((resolve, reject) => {
-            resolve(this.liftRelay.toggleOn())
+            this.liftRelay.toggleOn()
+            this.grinderInput.on('alert', (level, input) => {
+                console.log('grinderLevel ', level,)
+                 if (level == 1) {
+                     resolve(level)
+                 }
+             })
         })
     }
 
     lift() {
         console.log('Lifting grinder')
         return new Promise((resolve, reject) => {
-            resolve(this.liftRelay.toggleOff())
+            this.liftRelay.toggleOff()
+            this.grinderInput.on('alert', (level, input) => {
+                console.log('grinderLevel ', level,)
+                 if (level == 0) {
+                     resolve(level)
+                 }
+             })
         })
     }
 
@@ -57,11 +69,14 @@ module.exports = class Grinder {
 
     startLiftTimer() {
         console.log('Starting lift timer')
-        this.liftTimerIsStarted = true
-        setTimeout(() => {
-            this.liftRelay.toggleOff()
-            this.liftTimerIsStarted = false
-        }, 10000)
+        return new Promise((resolve, reject) => {
+            this.liftTimerIsStarted = true
+            setTimeout(() => {
+                this.liftTimerIsStarted = false
+                resolve(this.lift())
+            }, 10000)
+        })
+        
     }
 
 }

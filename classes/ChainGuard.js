@@ -30,7 +30,6 @@ module.exports = class ChainGuard{
         return new Promise((resolve, reject) => {
             this.pushRelay.toggleOn()
             this.pushChainInput.on('alert', async (level, input) => {
-                console.log(level)
                 if(level === 1) {
                     await this.moveBackPusher()
                     resolve(this.pushChainInput.removeAllListeners('alert'))
@@ -44,7 +43,6 @@ module.exports = class ChainGuard{
         return new Promise((resolve, reject) => {
             this.pushRelay.toggleOff()
             this.pushChainInput.on('alert', (level, input) => {
-                console.log(level)
                 if(level === 0) {
                     resolve(level)
                 }
