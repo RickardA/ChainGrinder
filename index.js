@@ -1,8 +1,10 @@
 require('dotenv').config()
 const inquirer = require('inquirer')
 const SetupProgram = require('./classes/SetupProgram')
+const Program = require('./classes/Program')
 
 const setupProgram = new SetupProgram()
+const program = new Program()
 
 const testMenu = [{
     type: 'list',
@@ -31,7 +33,8 @@ async function startSetupMenu() {
         
 }
 
-startSetupMenu()
+//startSetupMenu()
+program.startProgram()
 
 process.on('SIGINT', () => {
     setupProgram.exit()
@@ -43,6 +46,10 @@ setupProgram.on('setupStarted', () => {
 
 setupProgram.on('setupStopped', () => {
     console.log('Setuuuup is doone!!')
+})
+
+program.on('done', () => {
+    console.log('program done')
 })
 
 
