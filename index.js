@@ -2,9 +2,11 @@ require('dotenv').config()
 const inquirer = require('inquirer')
 const SetupProgram = require('./classes/SetupProgram')
 const Program = require('./classes/Program')
+const ChainPusher = require('./classes/ChainGuard')
 
 const setupProgram = new SetupProgram()
 const program = new Program()
+const s = new ChainPusher()
 
 const testMenu = [{
     type: 'list',
@@ -33,8 +35,13 @@ async function startSetupMenu() {
         
 }
 
+async function p() {
+    await s.pushChain()
+    console.log('DONE!!!!')
+}
+
 //startSetupMenu()
-program.startProgram()
+//program.startProgram()
 
 process.on('SIGINT', () => {
     setupProgram.exit()

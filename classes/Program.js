@@ -52,7 +52,8 @@ module.exports = class Program extends EventEmitter {
     async startProgram() {
         if(this.teethCounter != 2) {
             await this.chainGuard.releaseChain()
-            await Promise.all([this.chainGuard.pushChain(), this.grinder.alterAngle()])
+            await this.grinder.alterAngle()
+            await this.chainGuard.pushChain()
         } else {
             this.emit('done', true)
         }
