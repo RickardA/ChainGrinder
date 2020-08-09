@@ -36,9 +36,11 @@ async function startSetupMenu() {
 }
 
 async function p() {
-    await s.pushChain()
+   // await s.pushChain()
     console.log('DONE!!!!')
 }
+
+p()
 
 //startSetupMenu()
 //program.startProgram()
@@ -58,7 +60,6 @@ setupProgram.on('setupStopped', () => {
 program.on('done', () => {
     console.log('program done')
 })
-
 
 
 

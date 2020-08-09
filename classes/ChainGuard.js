@@ -1,10 +1,13 @@
 const Relay = require('./Relay')
+const Gpio = require('pigpio').Gpio
 
 module.exports = class ChainGuard{
 
     constructor() {
         this.clampRelay = new Relay(process.env.CHAINGUARD_CLAMP_PIN,false)
         this.pushRelay = new Relay(process.env.CHAINGUARD_PUSH_PIN,false)
+        this.pushChainInput = new Gpio(process.env.CHAINGUARD_PUSH_INPUT_PIN,{mode: Gpio.INPUT, alert: true})
+        this.pushChainInput.glitchFilter(300000)
         this.pushLevel = 1
     }
 
@@ -26,10 +29,11 @@ module.exports = class ChainGuard{
         console.log('Pushing chain')
         return new Promise((resolve, reject) => {
             this.pushRelay.toggleOn()
-            this.pushChainInput.on('alert', (level, input) => {
+            this.pushChainInput.on('alert', async (level, input) => {
                 console.log(level)
                 if(level === 1) {
-                    resolve(this.moveBackPusher())
+                    await this.moveBackPusher()
+                    resolve(this.pushChainInput.removeAllListeners('alert'))
                 }
             })
         })
