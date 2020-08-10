@@ -11,58 +11,25 @@ module.exports = class Program extends EventEmitter {
             Program.instance = this
             this.grinder = new Grinder()
             this.chainGuard = new ChainGuard()
-            this.pushChainInput = new Gpio(process.env.CHAINGUARD_PUSH_INPUT_PIN,{mode: Gpio.INPUT, alert: true})
-            this.grinderInput = new Gpio(process.env.GRINDER_LOWERED_INPUT,{mode: Gpio.INPUT, alert: true})
-
-            this.pushChainInput.glitchFilter(300000)
-            this.grinderInput.glitchFilter(300000)
+            
         }
-
         return Program.instance
     }
 
-    async exit() {
-        await this.grinder.lift()
-        await this.grinder.turnOff()
-        await this.chainGuard.releaseChain()
-        process.exit()
-        
-    }
-
-    alterGrinderAngle() {
-        this.grinder.alterAngle()
-    }
-
     async startProgram() {
+        let teethCounter = 0
         do {
-            await this.chainGuard.releaseChain()
-            await this.grinder.alterAngle()
-            await this.chainGuard.pushChain()
-            await this.chainGuard.clampChain()
-            await this.grinder.turnOn()
+            await Promise.all([this.grinder.alterAngle(), this.chainGuard.pushChain()])
+            await Promise.all([this.chainGuard.clampChain(), this.grinder.turnOn()])
             await this.grinder.lower()
             await this.grinder.startLiftTimer()
-            await this.grinder.turnOff()
+            await this.chainGuard.releaseChain()
             console.log('One iteration done')
-        } while(this.teethCounter != 2) 
+            teethCounter += 1
+        } while(teethCounter != 2) 
         
+        await this.grinder.turnOff()
+
         this.emit('done', true)
-    }
-
-    async continueProgram() {
-        await this.chainGuard.clampChain()
-        await this.grinder.turnOn()
-        await this.grinder.lower()
-    }
-
-    async stopSetupSequence() {
-        console.log('Stopping setup sequence...')
-        await this.grinder.lift()
-    }
-
-    async turnOffAndReleaseChain() {
-        await Promise.all([this.grinder.turnOff(), this.chainGuard.releaseChain()])
-        console.log('Setup sequence stopped')
-        this.emit('setupStopped',true)
     }
 }

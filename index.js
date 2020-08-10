@@ -6,7 +6,6 @@ const ChainPusher = require('./classes/ChainGuard')
 
 const setupProgram = new SetupProgram()
 const program = new Program()
-const s = new ChainPusher()
 
 const testMenu = [{
     type: 'list',
@@ -15,6 +14,7 @@ const testMenu = [{
     choices: [
         'Alter angle of grinder',
         'RED BUTTON',
+        'RUN PROGRAM'
     ]
 }]
 
@@ -29,25 +29,19 @@ async function startSetupMenu() {
                 case 'RED BUTTON':
                     await setupProgram.runSetupSequence()
                     break;
+                case 'RUN PROGRAM':
+                    await program.startProgram()
             }        
 
     }
         
 }
 
-async function p() {
-   // await s.pushChain()
-    console.log('DONE!!!!')
-}
+startSetupMenu()
 
-p()
-
-//startSetupMenu()
-//program.startProgram()
-
-process.on('SIGINT', () => {
+/*process.on('SIGINT', () => {
     setupProgram.exit()
-})
+})*/
 
 setupProgram.on('setupStarted', () => {
     console.log('Setuuuup is started!!')
@@ -57,9 +51,9 @@ setupProgram.on('setupStopped', () => {
     console.log('Setuuuup is doone!!')
 })
 
-program.on('done', () => {
+/*program.on('done', () => {
     console.log('program done')
-})
+})*/
 
 
 

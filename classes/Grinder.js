@@ -1,14 +1,20 @@
 const Relay = require('./Relay')
+const Gpio = require('pigpio').Gpio
 
 module.exports = class Grinder {
 
     constructor() {
-        this.motorRelay = new Relay(process.env.GRINDER_MOTOR_PIN,false)
-        this.liftRelay = new Relay(process.env.GRINDER_LIFT_PIN,false)
-        this.angleRelay = new Relay(process.env.GRINDER_ANGLE_PIN,false)
+        if(!Grinder.instance) {
+            this.motorRelay = new Relay(process.env.GRINDER_MOTOR_PIN,false)
+            this.liftRelay = new Relay(process.env.GRINDER_LIFT_PIN,false)
+            this.angleRelay = new Relay(process.env.GRINDER_ANGLE_PIN,false)
+            this.grinderInput = new Gpio(process.env.GRINDER_LOWERED_INPUT,{mode: Gpio.INPUT, alert: true})
 
-        this.liftTimerIsStarted = false
-        this.isAtOrigin = true
+            this.grinderInput.glitchFilter(300000)
+            this.liftTimerIsStarted = false
+            this.isAtOrigin = true
+        }
+        return Grinder.instance
     }
 
     turnOn() {
@@ -33,7 +39,7 @@ module.exports = class Grinder {
             this.grinderInput.on('alert', (level, input) => {
                 console.log('grinderLevel ', level,)
                  if (level == 1) {
-                     resolve(level)
+                     resolve(this.grinderInput.removeAllListeners('alert'))
                  }
              })
         })
@@ -46,7 +52,7 @@ module.exports = class Grinder {
             this.grinderInput.on('alert', (level, input) => {
                 console.log('grinderLevel ', level,)
                  if (level == 0) {
-                     resolve(level)
+                    resolve(this.grinderInput.removeAllListeners('alert'))
                  }
              })
         })
