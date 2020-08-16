@@ -10,7 +10,7 @@ module.exports = class Grinder {
             this.angleRelay = new Relay(process.env.GRINDER_ANGLE_PIN,false)
             this.grinderInput = new Gpio(process.env.GRINDER_LOWERED_INPUT,{mode: Gpio.INPUT, alert: true})
 
-            this.grinderInput.glitchFilter(300000)
+            this.grinderInput.glitchFilter(200000)
             this.liftTimerIsStarted = false
             this.isAtOrigin = true
         }
@@ -20,8 +20,13 @@ module.exports = class Grinder {
     turnOn() {
         console.log('Starting grinder')
         return new Promise((resolve, reject) => {
-            this.motorRelay.toggleOn()
-            setTimeout(() => { resolve('Grinder on')},5000)
+            if (!this.motorRelay.isToggledOn()) {
+                this.motorRelay.toggleOn()
+                setTimeout(() => { resolve('Grinder on')},5000)
+            } else {
+                resolve('Grinder already on')
+            }
+            
         })
     }
 
@@ -80,7 +85,7 @@ module.exports = class Grinder {
             setTimeout(() => {
                 this.liftTimerIsStarted = false
                 resolve(this.lift())
-            }, 10000)
+            }, 5000)
         })
         
     }

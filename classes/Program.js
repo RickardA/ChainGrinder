@@ -26,7 +26,7 @@ module.exports = class Program extends EventEmitter {
             await this.chainGuard.releaseChain()
             console.log('One iteration done')
             teethCounter += 1
-        } while(teethCounter != 2) 
+        } while(teethCounter != 5) 
         
         await this.grinder.turnOff()
 

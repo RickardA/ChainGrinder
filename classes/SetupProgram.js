@@ -30,6 +30,14 @@ module.exports = class SetupProgram extends EventEmitter {
         this.grinder.alterAngle()
     }
 
+    async liftGrinder() {
+        await this.grinder.lift()
+    }
+
+    async lowerGringer() {
+        await this.grinder.lower()
+    }
+
     async runSetupSequence() {
         console.log('Running setup sequence...')
         if(!this.setupSequenceIsRunning) {

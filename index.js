@@ -5,7 +5,7 @@ const Program = require('./classes/Program')
 const ChainPusher = require('./classes/ChainGuard')
 
 const setupProgram = new SetupProgram()
-const program = new Program()
+//const program = new Program()
 
 const testMenu = [{
     type: 'list',
@@ -14,7 +14,9 @@ const testMenu = [{
     choices: [
         'Alter angle of grinder',
         'RED BUTTON',
-        'RUN PROGRAM'
+        'RUN PROGRAM',
+        'LIFT',
+        'LOWER'
     ]
 }]
 
@@ -31,6 +33,13 @@ async function startSetupMenu() {
                     break;
                 case 'RUN PROGRAM':
                     await program.startProgram()
+                    break
+                case 'LIFT':
+                    await setupProgram.liftGrinder()
+                    break
+                case 'LOWER':
+                    await setupProgram.lowerGringer()
+                    break
             }        
 
     }
@@ -43,13 +52,13 @@ startSetupMenu()
     setupProgram.exit()
 })*/
 
-setupProgram.on('setupStarted', () => {
+/*setupProgram.on('setupStarted', () => {
     console.log('Setuuuup is started!!')
-})
+})*/
 
-setupProgram.on('setupStopped', () => {
+/*setupProgram.on('setupStopped', () => {
     console.log('Setuuuup is doone!!')
-})
+})*/
 
 /*program.on('done', () => {
     console.log('program done')
