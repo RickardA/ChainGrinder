@@ -1,6 +1,5 @@
 const Grinder = require('./Grinder')
 const ChainGuard = require('./ChainGuard')
-const Gpio = require('pigpio').Gpio
 const EventEmitter = require('events')
 
 module.exports = class Program extends EventEmitter {
