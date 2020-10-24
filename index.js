@@ -1,68 +1,52 @@
-require('dotenv').config()
-const inquirer = require('inquirer')
-const SetupProgram = require('./classes/SetupProgram')
-const Program = require('./classes/Program')
-const ChainPusher = require('./classes/ChainGuard')
+const express = require('express')
+const WebSocket = require('ws')
+const { v4: uuidv4 } = require('uuid');
+const app = express()
 
-const setupProgram = new SetupProgram()
-//const program = new Program()
+app.use(express.static('public'))
 
-const testMenu = [{
-    type: 'list',
-    name: 'testMenu',
-    message: 'What do you want to do?',
-    choices: [
-        'Alter angle of grinder',
-        'RED BUTTON',
-        'RUN PROGRAM',
-        'LIFT',
-        'LOWER'
-    ]
-}]
+app.listen(3000, () => {
+    console.log('Opend port on 3000')
+})
 
-async function startSetupMenu() {
-    while(true) {
-       const answer = await inquirer.prompt(testMenu)
+const wss = new WebSocket.Server({ port: 8080 })
 
-            switch (answer.testMenu) {
-                case 'Alter angle of grinder':
-                    await setupProgram.alterGrinderAngle()
-                    break;
-                case 'RED BUTTON':
-                    await setupProgram.runSetupSequence()
-                    break;
-                case 'RUN PROGRAM':
-                    await program.startProgram()
-                    break
-                case 'LIFT':
-                    await setupProgram.liftGrinder()
-                    break
-                case 'LOWER':
-                    await setupProgram.lowerGringer()
-                    break
-            }        
+const connectedClients = new Map()
 
-    }
-        
+wss.on('connection', ws => {
+    const clientID = uuidv4()
+    connectedClients.set(clientID,ws)
+    console.log('Client connected: ', clientID)
+
+    ws.on('message', message => {
+        console.log('Recieved message: ', message)
+        switch (message) {
+            case 'LOWER':
+                
+            break
+            case 'LIFT':
+            
+            break
+            case 'ALTER ANGLE':
+                
+            break
+            case 'SETUP SEQUENCE':
+
+            break
+        }
+    })
+
+    ws.on('close', () => {
+        connectedClients.delete(clientID)
+        console.log('Client disconnected: ', clientID)
+    })
+})
+
+wss.broadcast = (msg) => {
+    wss.clients.forEach(function each (client) {
+        client.send(msg)
+    })
 }
-
-startSetupMenu()
-
-/*process.on('SIGINT', () => {
-    setupProgram.exit()
-})*/
-
-/*setupProgram.on('setupStarted', () => {
-    console.log('Setuuuup is started!!')
-})*/
-
-/*setupProgram.on('setupStopped', () => {
-    console.log('Setuuuup is doone!!')
-})*/
-
-/*program.on('done', () => {
-    console.log('program done')
-})*/
 
 
 
