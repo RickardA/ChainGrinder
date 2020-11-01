@@ -8,7 +8,7 @@ module.exports = class Relay extends EventEmitter {
         this.pin = pin
         this.isInverted = isInverted
 
-        this.relay = new Gpio(pin,Gpio.OUTPUT)
+        this.relay = new Gpio(pin >> 0,Gpio.OUTPUT)
     }
 
     toggleOn() {
