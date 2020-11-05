@@ -3,6 +3,7 @@ const WebSocket = require('ws')
 const { v4: uuidv4 } = require('uuid');
 const app = express()
 const SetupProgram = require('./classes/SetupProgram')
+const { getState, setSettings } = require('./globals')
 
 app.use(express.static('public'))
 
@@ -14,17 +15,18 @@ const wss = new WebSocket.Server({ port: 8080 })
 
 const setupProgram = new SetupProgram()
 
-const connectedClients = new Map()
+const connectedClients = []
 
 wss.on('connection', ws => {
     const clientID = uuidv4()
-    connectedClients.set(clientID,ws)
+    connectedClients.push({clientID,ws})
     console.log('Client connected: ', clientID)
+    sendMessageToClient(getState(),clientID)
 
     ws.on('message', message => {
         const msg = JSON.parse(message)
         if (msg.hasOwnProperty('command')) {
-            handleCommand(msg.command)
+            handleCommand(msg)
         }
     })
 
@@ -33,6 +35,13 @@ wss.on('connection', ws => {
         console.log('Client disconnected: ', clientID)
     })
 })
+
+function sendMessageToClient(msg,client) {
+    wss.broadcast = (msg) => {
+        client  = connectedClients.filter(client => client.clientID === client)[0]
+        client.send(msg)
+    }
+}
 
 
 function sendMessage(msg) {
@@ -43,37 +52,37 @@ function sendMessage(msg) {
     }
 }
 
-async function handleCommand(command) {
-    switch (command) {
+module.exports = { sendMessage }
+
+async function handleCommand(msg) {
+    switch (msg.command) {
         case 'LOWER':
             console.log('LOWER')
-            sendMessage({ status: 'LOWERING'})
             await setupProgram.lowerGrinder()
-            sendMessage({ status: 'RESTING'})
             break;
         case 'LIFT':
             console.log('LIFT')
-            sendMessage({ status: 'LIFTING'})
             await setupProgram.liftGrinder()
-            sendMessage({ status: 'RESTING'})
             break;
         case 'ALTER ANGLE':
             console.log('ALTER ANGLE')
-            sendMessage({ status: 'ALTERING ANGLE'})
             await setupProgram.alterGrinderAngle()
-            sendMessage({ status: 'RESTING'})
             break;
         case 'SETUP SEQUENCE':
             console.log('SETUP SEQUENCE')
-            sendMessage({ status: 'RUNNING SETUP'})
             await setupProgram.runSetupSequence()
-            sendMessage({ status: 'RESTING'})
             break;
+        case 'SETTINGS':
+            console.log('SETTINGS: ',msg.settings)
+            setSettings(msg.settings)
         case 'START':
             console.log('START')
             break;
         case 'STOP':
             console.log('STOP')
+            break;
+        case 'STATUS':
+            sendMessage(getState())
             break;
     }
 }

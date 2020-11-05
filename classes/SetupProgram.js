@@ -26,20 +26,27 @@ module.exports = class SetupProgram extends EventEmitter {
     }
 
     alterGrinderAngle() {
+        setStatus('ALTERING ANGLE')
         this.grinder.alterAngle()
+        setStatus('RESTING')
     }
 
     async liftGrinder() {
+        setStatus('LIFTING')
         await this.grinder.lift()
+        setStatus('RESTING')
     }
 
     async lowerGrinder() {
+        setStatus('LOWERING')
         await this.grinder.lower()
+        setStatus('RESTING')
     }
 
     async runSetupSequence() {
         console.log('Running setup sequence...')
         if(!this.setupSequenceIsRunning) {
+            setStatus('SETUP')
             this.setupSequenceIsRunning = true
             await Promise.all([this.grinder.alterAngle(), this.chainGuard.pushChain()])
             await Promise.all([this.chainGuard.clampChain(), this.grinder.turnOn()])
@@ -49,6 +56,7 @@ module.exports = class SetupProgram extends EventEmitter {
         } else {
             await this.stopSetupSequence()
             this.setupSequenceIsRunning = false
+            setStatus('RESTING')
         }
     }
 
