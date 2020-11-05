@@ -52,7 +52,11 @@ function sendMessage(msg) {
     }
 }
 
-module.exports = { sendMessage }
+function send(msg) {
+    sendMessage(msg)
+}
+
+module.exports = { send }
 
 async function handleCommand(msg) {
     switch (msg.command) {
