@@ -1,6 +1,7 @@
 const Grinder = require('./Grinder')
 const ChainGuard = require('./ChainGuard')
 const EventEmitter = require('events')
+const { setStatus } = require('../globals')
 
 module.exports = class SetupProgram extends EventEmitter {
 

@@ -1,6 +1,5 @@
 const Relay = require('./Relay')
 const Gpio = require('pigpio').Gpio
-const { setStatus } = require('../globals')
 
 module.exports = class Grinder {
 
