@@ -11,7 +11,7 @@ module.exports = class Socket extends EventEmitter {
             this.wss = new WebSocket.Server({ port: 8080 })
             this.connectedClients = []
             
-            wss.on('connection', ws => {
+            this.wss.on('connection', ws => {
                 const clientID = uuidv4()
                 this.connectedClients.push({clientID,ws})
                 console.log('Client connected: ', clientID)
@@ -32,7 +32,7 @@ module.exports = class Socket extends EventEmitter {
             })
         }
 
-        return Socket.instanceß
+        return Socket.instance
     }
 
     sendMessageToClient(msg,client) {
