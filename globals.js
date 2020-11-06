@@ -12,23 +12,23 @@ let state = {
 }
 
 socket.on('connected',(clientID) => {
-    socket.sendMessageToClient(state.status,clientID)
+    socket.sendMessageToClient({status: state.status},clientID)
 })
 
 
 function setStatus(val) {
     state.status = val
-    socket.sendMessage(state.status)
+    socket.sendMessage({status: state.status})
 }
 
 async function setSettings(val) {
     state.settings = val
-    socket.sendMessage(state.settings)
+    socket.sendMessage({settings: state.settings})
 }
 
 function setToothsLeft(val) {
     state.numberOfToothsLeft = val
-    socket.sendMessage(state.numberOfToothsLeft)
+    socket.sendMessage({numberOfToothsLeft: state.numberOfToothsLeft})
 }
 
 function getState() {

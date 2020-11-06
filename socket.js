@@ -25,7 +25,7 @@ module.exports = class Socket extends EventEmitter {
                 })
             
                 ws.on('close', () => {
-                    connectedClients.delete(clientID)
+                    this.connectedClients = this.connectedClients.filter(client => client.clientID !== clientID)
                     console.log('Client disconnected: ', clientID)
                 })
             })
@@ -35,19 +35,18 @@ module.exports = class Socket extends EventEmitter {
     }
 
     sendMessageToClient(msg,client) {
-        this.wss.broadcast = (msg) => {
-            client  = cthis.onnectedClients.filter(client => client.clientID === client)[0]
-            client.send(msg)
-        }
+	console.log('Sending message to client',client)
+	//console.log('Connected clients: ', this.wss.clients)
+            const clientToSendTo = this.connectedClients.filter(c => c.clientID === client)[0]
+	clientToSendTo.ws.send(JSON.stringify(msg))
     }
 
 
     sendMessage(msg) {
-        this.wss.broadcast = (msg) => {
-            this.wss.clients.forEach(function each (client) {
-                client.send(msg)
+	console.log('Sending message to all clients', msg)
+	    this.wss.clients.forEach(function each (client) {
+	        client.send(JSON.stringify(msg))
             })
-        }
     }
 
 }
