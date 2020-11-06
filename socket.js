@@ -16,7 +16,6 @@ module.exports = class Socket extends EventEmitter {
                 this.connectedClients.push({clientID,ws})
                 console.log('Client connected: ', clientID)
                 this.emit('connected',clientID)
-                sendMessageToClient(getState(),clientID)
             
                 ws.on('message', message => {
                     const msg = JSON.parse(message)
