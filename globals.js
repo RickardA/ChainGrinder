@@ -1,4 +1,4 @@
-const { send } = require('./index')
+const { sendMessage } = require('./index')
 
 let state = {
     status: 'RESTING',
@@ -11,17 +11,17 @@ let state = {
 
 function setStatus(val) {
     state.status = val
-    send(state.status)
+    sendMessage(state.status)
 }
 
 async function setSettings(val) {
     state.settings = val
-    send(state.settings)
+    sendMessage(state.settings)
 }
 
 function setToothsLeft(val) {
     state.numberOfToothsLeft = val
-    send(state.numberOfToothsLeft)
+    sendMessage(state.numberOfToothsLeft)
 }
 
 function getState() {
