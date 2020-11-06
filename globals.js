@@ -1,4 +1,7 @@
 const { sendMessage } = require('./socket')
+const Socket = require('./socket')
+
+const socket = new Socket()
 
 let state = {
     status: 'RESTING',
@@ -8,20 +11,24 @@ let state = {
     }
 }
 
+socket.on('connected',(clientID) => {
+    socket.sendMessageToClient(state.status,clientID)
+})
+
 
 function setStatus(val) {
     state.status = val
-    sendMessage(state.status)
+    socket.sendMessage(state.status)
 }
 
 async function setSettings(val) {
     state.settings = val
-    sendMessage(state.settings)
+    socket.sendMessage(state.settings)
 }
 
 function setToothsLeft(val) {
     state.numberOfToothsLeft = val
-    sendMessage(state.numberOfToothsLeft)
+    socket.sendMessage(state.numberOfToothsLeft)
 }
 
 function getState() {

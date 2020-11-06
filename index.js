@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const SetupProgram = require('./classes/SetupProgram')
 const { getState, setSettings } = require('./globals')
+const Socket = require('./socket')
 
 app.use(express.static('public'))
 
@@ -10,9 +11,12 @@ app.listen(3000, () => {
 })
 
 
-
+const socket = new Socket()
 const setupProgram = new SetupProgram()
 
+socket.on('message',(msg) => {
+    handleCommand(msg)
+})
 
 
 async function handleCommand(msg) {
@@ -41,9 +45,6 @@ async function handleCommand(msg) {
             break;
         case 'STOP':
             console.log('STOP')
-            break;
-        case 'STATUS':
-            sendMessage(getState())
             break;
     }
 }
