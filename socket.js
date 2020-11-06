@@ -36,16 +36,16 @@ module.exports = class Socket extends EventEmitter {
     }
 
     sendMessageToClient(msg,client) {
-        wss.broadcast = (msg) => {
-            client  = connectedClients.filter(client => client.clientID === client)[0]
+        this.wss.broadcast = (msg) => {
+            client  = cthis.onnectedClients.filter(client => client.clientID === client)[0]
             client.send(msg)
         }
     }
 
 
     sendMessage(msg) {
-        wss.broadcast = (msg) => {
-            wss.clients.forEach(function each (client) {
+        this.wss.broadcast = (msg) => {
+            this.wss.clients.forEach(function each (client) {
                 client.send(msg)
             })
         }
