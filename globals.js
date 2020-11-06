@@ -1,4 +1,4 @@
-const { sendMessage } = require('./index')
+const { sendMessage } = require('./socket')
 
 let state = {
     status: 'RESTING',
