@@ -1,6 +1,5 @@
 const WebSocket = require('ws')
 const { v4: uuidv4 } = require('uuid');
-const { getState } = require('./globals')
 
 
 const wss = new WebSocket.Server({ port: 8080 })
