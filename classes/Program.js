@@ -1,6 +1,7 @@
 const Grinder = require('./Grinder')
 const ChainGuard = require('./ChainGuard')
 const EventEmitter = require('events')
+const { getTotalTooths, setToothsLeft, setStatus, getStatus } = require('../globals')
 
 module.exports = class Program extends EventEmitter {
 
@@ -16,7 +17,8 @@ module.exports = class Program extends EventEmitter {
     }
 
     async startProgram() {
-        let teethCounter = 0
+        setToothsLeft(getTotalTooths())
+        setStatus('GRINDING')
         do {
             await Promise.all([this.grinder.alterAngle(), this.chainGuard.pushChain()])
             await Promise.all([this.chainGuard.clampChain(), this.grinder.turnOn()])
@@ -24,11 +26,12 @@ module.exports = class Program extends EventEmitter {
             await this.grinder.startLiftTimer()
             await this.chainGuard.releaseChain()
             console.log('One iteration done')
-            teethCounter += 1
-        } while(teethCounter != 5) 
+            setToothsLeft(getToothsLeft() + 1)
+        } while(getToothsLeft != getTotalTooths() && getStatus() !== 'STOP') 
         
         await this.grinder.turnOff()
-
+		
+		setStatus('RESTING')
         this.emit('done', true)
     }
 }

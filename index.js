@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
 const SetupProgram = require('./classes/SetupProgram')
-const { getState, setSettings } = require('./globals')
+const Program = require('./classes/Program')
+const { getState, setSettings, setToothsLeft, setTotalNumberOfTooths, setStatus } = require('./globals')
 const Socket = require('./socket')
 
 app.use(express.static('public'))
@@ -13,6 +14,7 @@ app.listen(3000, () => {
 
 const socket = new Socket()
 const setupProgram = new SetupProgram()
+const program = new Program()
 
 socket.on('message',(msg) => {
     handleCommand(msg)
@@ -41,13 +43,15 @@ async function handleCommand(msg) {
             console.log('SETTINGS: ',msg.settings)
             setSettings(msg.settings)
         case 'NUMBEROFTOOTHS':
-			setSettings({ totalNumberOfTooths: msg.value })
+			setTotalNumberOfTooths(msg.value)
         break;
         case 'START':
             console.log('START')
+            program.startProgram()
             break;
         case 'STOP':
             console.log('STOP')
+            setStatus('STOP')
             break;
     }
 }

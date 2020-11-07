@@ -21,14 +21,20 @@ function setStatus(val) {
     socket.sendMessage({type: 'STATUS', status: state.status})
 }
 
-async function setSettings(val) {
+function setSettings(val) {
     state.settings = val
     socket.sendMessage({type: 'SETTINGS', settings: state.settings})
 }
 
 function setToothsLeft(val) {
+	console.log('Setting tooths left: ', val)
     state.numberOfToothsLeft = val
     socket.sendMessage({type: 'NUMBEROFTOOTHS', numberOfToothsLeft: state.numberOfToothsLeft})
+}
+
+function setTotalNumberOfTooths(val) {
+	state.settings.totalNumberOfTooths = val
+	socket.sendMessage({type: 'TOTALTOOTHS', value: val})
 }
 
 function getState() {
@@ -39,8 +45,12 @@ function getSettings() {
     return state.settings
 }
 
-function getToothsLeft(val) {
+function getToothsLeft() {
     return state.numberOfToothsLeft
 }
 
-module.exports = { getState, setStatus, setSettings, setToothsLeft, getSettings, getToothsLeft }
+function getTotalTooths() {
+	return state.settings.totalNumberOfTooths
+}
+
+module.exports = { getState, setStatus, setSettings, setToothsLeft, getSettings, getToothsLeft, setTotalNumberOfTooths, getTotalTooths }
