@@ -77,9 +77,10 @@
         const toothInput = document.getElementById('toothInput')
         const totalTooths = document.getElementById('totalTooths')
         const toothsLeft = document.getElementById('toothsLeft')
+        
+        let connected = false
 
         let grinder = {
-			connected: false,
             status: 'RESTING',
             numberOfToothsLeft: 0,
             settings: {
@@ -133,7 +134,7 @@
 		}
 		
 		function updateGUI() {
-			statusLabel.innerHTML = grinder.connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
+			statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
 			toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
 			totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
 		}
@@ -163,14 +164,13 @@
         ///////////////////////////// Socket stuff ////////////////////////////////////////
 
         function connect() {
-            statusLabel.innerHTML = 'Ansluter... -'
-            grinder.connected = false
+            connected = false
             updateGUI()
             socket = new WebSocket(`ws://${window.location.hostname}:8080`)
 
             socket.onopen = () => {
                 console.log('Connected')
-                grinder.connected = true
+                connected = true
                 updateGUI()
             }
     
@@ -181,7 +181,7 @@
     
             socket.onclose = () => {
                 console.log('Connection is closed')
-                grinder.connected = false
+                connected = false
                 updateGUI()
                 setTimeout(function() {
                     connect();
