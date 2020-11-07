@@ -40,6 +40,9 @@ async function handleCommand(msg) {
         case 'SETTINGS':
             console.log('SETTINGS: ',msg.settings)
             setSettings(msg.settings)
+        case 'NUMBEROFTOOTHS':
+			setSettings({ totalNumberOfTooths: msg.value })
+        break;
         case 'START':
             console.log('START')
             break;

@@ -40,9 +40,12 @@
         <div class="d-flex m-flex-1 mr-3 ml-3">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="basic-addon1">Antal tänder</span>
+                    <span class="input-group-text">Antal tänder</span>
                 </div>
-                <input type="text" class="form-control" placeholder="Antal tänder">
+                <input type="text" class="form-control" id="toothInput" placeholder="Antal tänder">
+                <div class="input-group-append">
+					<button class="btn btn-success m-flex-1 mr-3" type="button" onclick="setNumberOfTooths()">Tillämpa</button>
+                </div>
                 </div>                  
             </div>
             <div class="d-flex m-flex-1 mt-3">
@@ -51,10 +54,10 @@
             </div>
             <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
                 <div class="input-group-prepend m-flex-1 mr-5">
-                    <span class="input-group-text" id="basic-addon1">Totalt antal tänder: </span>
+                    <span class="input-group-text" id="totalTooths">Totalt antal tänder: </span>
                 </div>
                 <div class="input-group-prepend m-flex-1">
-                    <span class="input-group-text" id="basic-addon1">Antal tänder kvar: </span>
+                    <span class="input-group-text" id="toothsLeft">Antal tänder kvar: </span>
                 </div>
             </div>
         </div>
@@ -71,8 +74,12 @@
         const timeLabel = document.getElementById('timeLabel')
         const settingsPage = document.getElementById('settingsPage')
         const homePage = document.getElementById('homePage')
+        const toothInput = document.getElementById('toothInput')
+        const totalTooths = document.getElementById('totalTooths')
+        const toothsLeft = document.getElementById('toothsLeft')
 
         let grinder = {
+			connected: false,
             status: 'RESTING',
             numberOfToothsLeft: 0,
             settings: {
@@ -84,39 +91,98 @@
             connect()
             settingsTapped()
             displayCurrentTime()
-            checkStatus()
         }
 
         onLoad()
+        
+        function handleMessage(msg) {
+			switch(msg.type) {
+				case 'STATUS':
+					updateStatusLabel(msg.status)
+				break;
+				case 'NUMBEROFTOOTHS':
+					updateNumberOfToothsLeft(msg.numbeOfTooths)
+				break;
+				case 'SETTINGS':
+					updateSettings(msg.settings)
+				break;
+				case 'COMPLETE':
+					updateEverything(msg.complete)
+				break;
+			}
+		}
 
-        function refresh(msg) {
-            console.log(msg)
-        }
-
-        function checkStatus() {
-
-        }
+		function updateStatusLabel(status) {
+			grinder.status = status
+			updateGUI()
+		}
+		
+		function updateNumberOfToothsLeft(tooths) {
+			grinder.numberOfToothsLeft = tooths
+			updateGUI()
+		}
+		
+		function updateSettings(settings) {
+			grinder.settings = settings
+			updateGUI()
+		}
+		
+		function updateEverything(everything) {
+			grinder = everything
+			updateGUI()
+		}
+		
+		function updateGUI() {
+			statusLabel.innerHTML = grinder.connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
+			toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
+			totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
+		}
+		
+		function getStatusMsg() {
+			switch(grinder.status) {
+				case 'RESTING':
+					return 'Vilar'
+				break;
+				case 'LOWERING':
+					return 'Sänker...'
+				break;
+				case 'LIFTING':
+					return 'Lyfter...'
+				break;
+				case 'ALTERING ANGLE':
+					return 'Vinklar...'
+				break;
+				case 'SETUP':
+					return 'Inställnings Läge'
+				break;
+			}
+			
+		}
 
 
         ///////////////////////////// Socket stuff ////////////////////////////////////////
 
         function connect() {
-            statusLabel.innerHTML = 'Status: Connecting...'
+            statusLabel.innerHTML = 'Ansluter... -'
+            grinder.connected = false
+            updateGUI()
             socket = new WebSocket(`ws://${window.location.hostname}:8080`)
 
             socket.onopen = () => {
                 console.log('Connected')
-                statusLabel.innerHTML = 'Ansluten - Vilar'
+                grinder.connected = true
+                updateGUI()
             }
     
             socket.onmessage = (evt) => {
                 console.log('Recieved message: ', evt.data)
-                refresh(evt.data)
+				handleMessage(JSON.parse(evt.data))
             }
     
             socket.onclose = () => {
                 console.log('Connection is closed')
-                statusLabel.innerHTML = 'Ansluter... -'
+                grinder.connected = false
+                updateGUI()
                 setTimeout(function() {
                     connect();
                 }, 1000);
@@ -151,6 +217,11 @@
         }
 
         ////////////////////////// Grinder stuff ////////////////////////////////
+        
+        function setNumberOfTooths() {
+			console.log('Number of tooths: ', toothInput.value)
+			socket.send(JSON.stringify({ command: 'NUMBEROFTOOTHS', value: toothInput.value }))
+		}
 
         function lowerTapped() {
             socket.send(JSON.stringify({ command: 'LOWER'}))
