@@ -41,6 +41,10 @@ function getState() {
     return state
 }
 
+function getStatus() {
+	return state.status
+}
+
 function getSettings() {
     return state.settings
 }
@@ -53,4 +57,4 @@ function getTotalTooths() {
 	return state.settings.totalNumberOfTooths
 }
 
-module.exports = { getState, setStatus, setSettings, setToothsLeft, getSettings, getToothsLeft, setTotalNumberOfTooths, getTotalTooths }
+module.exports = { getStatus, getState, setStatus, setSettings, setToothsLeft, getSettings, getToothsLeft, setTotalNumberOfTooths, getTotalTooths }

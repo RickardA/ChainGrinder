@@ -7,8 +7,8 @@ module.exports = class ChainGuard{
         if(!ChainGuard.instance) {
             this.clampRelay = new Relay(process.env.CHAINGUARD_CLAMP_PIN,false)
             this.pushRelay = new Relay(process.env.CHAINGUARD_PUSH_PIN,false)
-            this.pushChainInput = new Gpio(process.env.CHAINGUARD_PUSH_INPUT_PIN >> 0,{mode: Gpio.INPUT, alert: true})
-            this.pushChainInput.glitchFilter(100000)
+            this.pushChainInput = new Gpio((process.env.CHAINGUARD_PUSH_INPUT_PIN >> 0),{mode: Gpio.INPUT, alert: true})
+            this.pushChainInput.glitchFilter(10000)
             this.pushLevel = 1
         }
         

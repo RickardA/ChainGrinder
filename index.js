@@ -1,9 +1,13 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const SetupProgram = require('./classes/SetupProgram')
 const Program = require('./classes/Program')
 const { getState, setSettings, setToothsLeft, setTotalNumberOfTooths, setStatus } = require('./globals')
 const Socket = require('./socket')
+const MyEmitter = require('./classes/MyEvent')
+
+const myEmitter = new MyEmitter()
 
 app.use(express.static('public'))
 
@@ -50,7 +54,7 @@ async function handleCommand(msg) {
             program.startProgram()
             break;
         case 'STOP':
-            console.log('STOP')
+            myEmitter.emitEvent('STOP')
             setStatus('STOP')
             break;
     }
