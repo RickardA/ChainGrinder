@@ -14,6 +14,7 @@ module.exports = class Program extends EventEmitter {
             this.grinder = new Grinder()
             this.chainGuard = new ChainGuard()
             this.myEmitter = new MyEmitter()
+            this.interval
             
         }
         return Program.instance
@@ -25,24 +26,27 @@ module.exports = class Program extends EventEmitter {
         console.log('Tooths left: ', getToothsLeft())
         console.log('Total tooths: ', getTotalTooths())
         console.log('Status: ', getStatus())
-        someLoop: do{
-			this.myEmitter.on('STOP', function() {
-				console.log('STOP')
-				break someLoop
-			})
-			//break someLoop
+		aLoop: do{
             await Promise.all([this.grinder.alterAngle(), this.chainGuard.pushChain()])
+            if(getStatus() === 'STOP') break
             await Promise.all([this.chainGuard.clampChain(), this.grinder.turnOn()])
+            if(getStatus() === 'STOP') break
             await this.grinder.lower()
+            if(getStatus() === 'STOP') break
             await this.grinder.startLiftTimer()
+            if(getStatus() === 'STOP') break
             await this.chainGuard.releaseChain()
+            if(getStatus() === 'STOP') break
             console.log('One iteration done')
             setToothsLeft(getToothsLeft() + 1)
+            if(getStatus() === 'STOP') break
         }while(getToothsLeft() != getTotalTooths() && getStatus() !== 'STOP')
         
+        await this.grinder.lift()
         await this.grinder.turnOff()
-		
-		setStatus('RESTING')
+		await this.grinder.releaseChain()
+        
+        setStatus('RESTING')
         this.emit('done', true)
     }
 }
