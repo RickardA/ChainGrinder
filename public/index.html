@@ -282,7 +282,7 @@
         
         function setNumberOfTooths() {
 			console.log('Number of tooths: ', toothInput.value)
-			socket.send(JSON.stringify({ command: 'NUMBEROFTOOTHS', value: toothInput.value }))
+			socket.send(JSON.stringify({ command: 'NUMBEROFTOOTHS', value: parseInt(toothInput.value) }))
 			toothInput.value = ''
 		}
 

@@ -10,8 +10,11 @@ module.exports = class Grinder {
             this.angleRelay = new Relay(process.env.GRINDER_ANGLE_PIN,false)
             console.log('Input pin: ',process.env.GRINDER_LOWERED_INPUT)
             this.grinderInput = new Gpio(process.env.GRINDER_LOWERED_INPUT >> 0,{mode: Gpio.INPUT, alert: true})
+            this.grinderInput.on('alert', (level, input) => {
+                console.log('grinderLevel ', level,)
+             })
 
-            this.grinderInput.glitchFilter(200000)
+            this.grinderInput.glitchFilter(10000)
             this.liftTimerIsStarted = false
             this.isAtOrigin = true
         }

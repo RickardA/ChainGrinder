@@ -28,7 +28,7 @@ function setSettings(val) {
 
 function setToothsLeft(val) {
 	console.log('Setting tooths left: ', val)
-    state.numberOfToothsLeft = val
+    state.numberOfToothsLeft = parseInt(val)
     socket.sendMessage({type: 'NUMBEROFTOOTHS', numberOfToothsLeft: state.numberOfToothsLeft})
 }
 

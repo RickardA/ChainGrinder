@@ -9,6 +9,9 @@ module.exports = class ChainGuard{
             this.pushRelay = new Relay(process.env.CHAINGUARD_PUSH_PIN,false)
             this.pushChainInput = new Gpio((process.env.CHAINGUARD_PUSH_INPUT_PIN >> 0),{mode: Gpio.INPUT, alert: true})
             this.pushChainInput.glitchFilter(10000)
+            this.pushChainInput.on('alert', (level, input) => {
+                console.log("Chain pusher level: ", level)
+            })
             this.pushLevel = 1
         }
         

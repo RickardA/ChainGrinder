@@ -13,6 +13,8 @@ module.exports = class Program extends EventEmitter {
             Program.instance = this
             this.grinder = new Grinder()
             this.chainGuard = new ChainGuard()
+            this.chainGuard.releaseChain()
+            this.grinder.lift()
             this.myEmitter = new MyEmitter()
             this.interval
             
@@ -38,9 +40,11 @@ module.exports = class Program extends EventEmitter {
             await this.chainGuard.releaseChain()
             if(getStatus() === 'STOP') break
             console.log('One iteration done')
-            setToothsLeft(getToothsLeft() + 1)
+            setToothsLeft(getToothsLeft() - 1)
+            console.log('Tooths left: ', getToothsLeft())
+			console.log('Total tooths: ', getTotalTooths())
             if(getStatus() === 'STOP') break
-        }while(getToothsLeft() != getTotalTooths() && getStatus() !== 'STOP')
+        }while(getToothsLeft() !== 0 && getStatus() !== 'STOP')
         
         await this.grinder.lift()
         await this.grinder.turnOff()
