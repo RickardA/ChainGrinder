@@ -13,14 +13,21 @@ module.exports = class Program extends EventEmitter {
             Program.instance = this
             this.grinder = new Grinder()
             this.chainGuard = new ChainGuard()
-            this.chainGuard.releaseChain()
-            this.grinder.lift()
             this.myEmitter = new MyEmitter()
             this.interval
+            
+            this.setupSequenceIsRunning = false
+
+            this.checkAndSetSequence()
             
         }
         return Program.instance
     }
+    
+    exit() {
+		this.grinder.stop()
+		this.chainGuard.stop()
+	}
 
     async startProgram() {
         setToothsLeft(getTotalTooths())
@@ -46,11 +53,61 @@ module.exports = class Program extends EventEmitter {
             if(getStatus() === 'STOP') break
         }while(getToothsLeft() !== 0 && getStatus() !== 'STOP')
         
-        await this.grinder.lift()
-        await this.grinder.turnOff()
-		await this.grinder.releaseChain()
+        this.grinder.stop()
+        this.chainGuard.stop()
         
         setStatus('RESTING')
         this.emit('done', true)
+    }
+
+    checkAndSetSequence() {
+        if(this.chainGuard.isClamped() || this.grinder.isLowered()) {
+            this.setupSequenceIsRunning = true
+        }
+    }
+
+    alterGrinderAngle() {
+        setStatus('ALTERING ANGLE')
+        this.grinder.alterAngle()
+        setStatus('RESTING')
+    }
+
+    async liftGrinder() {
+        setStatus('LIFTING')
+        await this.grinder.lift()
+        setStatus('RESTING')
+    }
+
+    async lowerGrinder() {
+        setStatus('LOWERING')
+        console.log('LOWERING GRINDER')
+        await this.grinder.lower()
+        console.log('GINDER LOWERED, RESTING')
+        setStatus('RESTING')
+    }
+
+    async runSetupSequence() {
+        console.log('Running setup sequence...')
+        if(!this.setupSequenceIsRunning) {
+            setStatus('SETUP')
+            this.setupSequenceIsRunning = true
+            await Promise.all([this.grinder.alterAngle(), this.chainGuard.pushChain()])
+            await Promise.all([this.chainGuard.clampChain(), this.grinder.turnOn()])
+            await this.grinder.lower()
+            console.log('Setup sequence done')
+            setStatus('SETUPSTARTED')
+        } else {
+            await this.stopSetupSequence()
+            this.setupSequenceIsRunning = false
+            setStatus('RESTING')
+        }
+    }
+
+    async stopSetupSequence() {
+        console.log('Stopping setup sequence...')
+        await this.grinder.lift()
+        await Promise.all([this.grinder.turnOff(), this.chainGuard.releaseChain()])
+        console.log('Setup sequence stopped')
+        this.emit('setupStopped',true)
     }
 }

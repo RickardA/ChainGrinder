@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const app = express()
-const SetupProgram = require('./classes/SetupProgram')
 const Program = require('./classes/Program')
 const { getState, setSettings, setToothsLeft, setTotalNumberOfTooths, setStatus } = require('./globals')
 const Socket = require('./socket')
@@ -17,11 +16,16 @@ app.listen(3000, () => {
 
 
 const socket = new Socket()
-const setupProgram = new SetupProgram()
 const program = new Program()
 
 socket.on('message',(msg) => {
     handleCommand(msg)
+})
+
+process.on('SIGINT', () => {
+	console.log('Do things before exit')
+	program.exit()
+	process.exit()
 })
 
 
@@ -29,19 +33,19 @@ async function handleCommand(msg) {
     switch (msg.command) {
         case 'LOWER':
             console.log('LOWER')
-            await setupProgram.lowerGrinder()
+            await program.lowerGrinder()
             break;
         case 'LIFT':
             console.log('LIFT')
-            await setupProgram.liftGrinder()
+            await program.liftGrinder()
             break;
         case 'ALTER ANGLE':
             console.log('ALTER ANGLE')
-            await setupProgram.alterGrinderAngle()
+            await program.alterGrinderAngle()
             break;
         case 'SETUP SEQUENCE':
             console.log('SETUP SEQUENCE')
-            await setupProgram.runSetupSequence()
+            await program.runSetupSequence()
             break;
         case 'SETTINGS':
             console.log('SETTINGS: ',msg.settings)

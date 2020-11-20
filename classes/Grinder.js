@@ -10,16 +10,23 @@ module.exports = class Grinder {
             this.angleRelay = new Relay(process.env.GRINDER_ANGLE_PIN,false)
             console.log('Input pin: ',process.env.GRINDER_LOWERED_INPUT)
             this.grinderInput = new Gpio(process.env.GRINDER_LOWERED_INPUT >> 0,{mode: Gpio.INPUT, alert: true})
-            this.grinderInput.on('alert', (level, input) => {
-                console.log('grinderLevel ', level,)
-             })
+           /* this.grinderInput.on('alert', (level, input) => {
+                console.log('grinderLevel common', level,)
+             })*/
 
+			this.liftRelay.toggleOff()
+			this.motorRelay.toggleOff()
             this.grinderInput.glitchFilter(10000)
             this.liftTimerIsStarted = false
             this.isAtOrigin = true
         }
         return Grinder.instance
     }
+    
+    stop() {
+		this.liftRelay.toggleOff()
+		this.motorRelay.toggleOff()
+	}
 
     turnOn() {
         console.log('Starting grinder')
@@ -44,13 +51,14 @@ module.exports = class Grinder {
     lower() {
         console.log('Lowering Grinder')
         return new Promise((resolve, reject) => {
-            this.liftRelay.toggleOn()
+			console.log('Inside promise')
             this.grinderInput.on('alert', (level, input) => {
-                console.log('grinderLevel ', level,)
+                console.log('grinderLevel lower ', level)
                  if (level == 1) {
                      resolve(this.grinderInput.removeAllListeners('alert'))
                  }
              })
+             this.liftRelay.toggleOn()
         })
     }
 
@@ -59,7 +67,7 @@ module.exports = class Grinder {
         return new Promise((resolve, reject) => {
             this.liftRelay.toggleOff()
             this.grinderInput.on('alert', (level, input) => {
-                console.log('grinderLevel ', level,)
+                console.log('grinderLevel lift', level,)
                  if (level == 0) {
                     resolve(this.grinderInput.removeAllListeners('alert'))
                  }

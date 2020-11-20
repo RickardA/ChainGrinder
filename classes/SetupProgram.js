@@ -40,7 +40,9 @@ module.exports = class SetupProgram extends EventEmitter {
 
     async lowerGrinder() {
         setStatus('LOWERING')
+        console.log('LOWERING GRINDER')
         await this.grinder.lower()
+        console.log('GINDER LOWERED, RESTING')
         setStatus('RESTING')
     }
 

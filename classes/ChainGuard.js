@@ -12,11 +12,17 @@ module.exports = class ChainGuard{
             this.pushChainInput.on('alert', (level, input) => {
                 console.log("Chain pusher level: ", level)
             })
-            this.pushLevel = 1
+            this.pushRelay.toggleOff()
+            this.clampRelay.toggleOff()
         }
         
         return ChainGuard.instance
     } 
+    
+    stop(){
+		this.pushRelay.toggleOff()
+        this.clampRelay.toggleOff()
+	}
 
     clampChain() {
         console.log('Clamping chain')

@@ -128,13 +128,26 @@
 		
 		function updateTotalTooths(val) {
 			grinder.settings.totalNumberOfTooths = val
+			if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null) {
+				startBtn.disabled = true
+			} else {
+				startBtn.disabled = false
+			}
 			totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
 		}
 
 		function updateStatusLabel(status) {
 			grinder.status = status
 			statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
-			startSetupBtn.value = grinder.status === 'SETUP' ? 'Avbryt inställnings sekvens' : 'Starta inställnings sekvens'
+			if (grinder.status.includes('SETUP')) {
+				startSetupBtn.innerHTML = 'Avbryt inställnings sekvens'
+				startSetupBtn.classList.remove("btn-success")
+				startSetupBtn.classList.add("btn-danger")
+			} else {
+				startSetupBtn.innerHTML = 'Starta inställnings sekvens'
+				startSetupBtn.classList.remove("btn-danger")
+				startSetupBtn.classList.add("btn-success")
+			}
 			updateButtonsDisabledState()
 		}
 		
@@ -157,7 +170,15 @@
 			statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
 			toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
 			totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
-			startSetupBtn.value = grinder.status === 'SETUP' ? 'Avbryt inställnings sekvens' : 'Starta inställnings sekvens'
+			if (grinder.status.includes('SETUP')) {
+				startSetupBtn.innerHTML = 'Avbryt inställnings sekvens'
+				startSetupBtn.classList.remove("btn-success")
+				startSetupBtn.classList.add("btn-danger")
+			} else {
+				startSetupBtn.innerHTML = 'Starta inställnings sekvens'
+				startSetupBtn.classList.remove("btn-danger")
+				startSetupBtn.classList.add("btn-success")
+			}
 			updateButtonsDisabledState()
 		}
 		
@@ -170,17 +191,26 @@
 				if(grinder.status !== 'GRINDING') {
 					console.log("Disable  cancel button: ",grinder.status) 
 					cancelBtn.disabled = true
+				} else {
+					cancelBtn.disabled = false
 				}
-				if(grinder.status !== 'SETUP') {
+				if(grinder.status === 'SETUPSTARTED') {
+					startSetupBtn.disabled = false
+				} else {
 					startSetupBtn.disabled = true
 				}
+				toothInputOK.disabled = true
 			} else {
 				angleGrinderBtn.disabled = false
 				lowerGrinderBtn.disabled = false
 				raiseGrinderBtn.disabled = false
 				startSetupBtn.disabled = false
-				startBtn.disabled = false
-				cancelBtn.disabled = false
+				if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null) {
+				startBtn.disabled = true
+				} else {
+					startBtn.disabled = false
+				}
+				cancelBtn.disabled = true
 			}
 		}
 		
@@ -205,7 +235,11 @@
 					return 'Stannar...'
 				break;
 				case 'SETUP':
-					return 'Inställnings Läge'
+					return 'Startar inställnings läge...'
+				break;
+				case 'SETUPSTARTED':
+					return 'Inställnings läge aktivt'
+				break;
 				break;
 			}
 			
@@ -284,6 +318,7 @@
 			console.log('Number of tooths: ', toothInput.value)
 			socket.send(JSON.stringify({ command: 'NUMBEROFTOOTHS', value: parseInt(toothInput.value) }))
 			toothInput.value = ''
+			toothInputOK.disabled = true
 		}
 
         function lowerTapped() {
