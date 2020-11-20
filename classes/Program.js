@@ -3,6 +3,7 @@ const ChainGuard = require('./ChainGuard')
 const EventEmitter = require('events')
 const { getTotalTooths, setToothsLeft, setStatus, getStatus, getToothsLeft } = require('../globals')
 const MyEmitter = require('./MyEvent')
+const Relay = require('./Relay')
 
 
 module.exports = class Program extends EventEmitter {
@@ -15,6 +16,9 @@ module.exports = class Program extends EventEmitter {
             this.chainGuard = new ChainGuard()
             this.myEmitter = new MyEmitter()
             this.interval
+            this.summer = new Relay(process.env.SUMMER,false)
+            
+            this.summer.toggleOff()
             
             this.setupSequenceIsRunning = false
 
@@ -27,6 +31,7 @@ module.exports = class Program extends EventEmitter {
     exit() {
 		this.grinder.stop()
 		this.chainGuard.stop()
+		this.summer.toggleOff()
 	}
 
     async startProgram() {
@@ -42,7 +47,7 @@ module.exports = class Program extends EventEmitter {
             if(getStatus() === 'STOP') break
             await this.grinder.lower()
             if(getStatus() === 'STOP') break
-            await this.grinder.startLiftTimer()
+            await Promise.all([this.grinder.startLiftTimer(), this.chainGuard.swingChain()])
             if(getStatus() === 'STOP') break
             await this.chainGuard.releaseChain()
             if(getStatus() === 'STOP') break
@@ -52,6 +57,12 @@ module.exports = class Program extends EventEmitter {
 			console.log('Total tooths: ', getTotalTooths())
             if(getStatus() === 'STOP') break
         }while(getToothsLeft() !== 0 && getStatus() !== 'STOP')
+        
+        this.summer.toggleOn()
+        
+        setTimeout(() => {
+			this.summer.toggleOff()
+		},5000)
         
         this.grinder.stop()
         this.chainGuard.stop()

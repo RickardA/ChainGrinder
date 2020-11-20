@@ -7,6 +7,7 @@ module.exports = class ChainGuard{
         if(!ChainGuard.instance) {
             this.clampRelay = new Relay(process.env.CHAINGUARD_CLAMP_PIN,false)
             this.pushRelay = new Relay(process.env.CHAINGUARD_PUSH_PIN,false)
+            this.moveRelay = new Relay(process.env.CHAINGUARD_MOVE_PIN,false)
             this.pushChainInput = new Gpio((process.env.CHAINGUARD_PUSH_INPUT_PIN >> 0),{mode: Gpio.INPUT, alert: true})
             this.pushChainInput.glitchFilter(10000)
             this.pushChainInput.on('alert', (level, input) => {
@@ -37,6 +38,17 @@ module.exports = class ChainGuard{
             resolve(this.clampRelay.toggleOff())
         })
     }
+    
+    swingChain() {
+		return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve(this.moveRelay.toggleOn())
+            }, 4000)
+            setTimeout(() => {
+                resolve(this.moveRelay.toggleOff())
+            }, 4900)
+        })
+	}
 
     pushChain() {
         console.log('Pushing chain')
