@@ -1,5 +1,6 @@
 const Relay = require('./Relay')
 const Gpio = require('pigpio').Gpio
+const globals = require('../globals')
 
 module.exports = class ChainGuard{
 
@@ -10,11 +11,7 @@ module.exports = class ChainGuard{
             this.moveRelay = new Relay(process.env.CHAINGUARD_MOVE_PIN,false)
             this.pushChainInput = new Gpio((process.env.CHAINGUARD_PUSH_INPUT_PIN >> 0),{mode: Gpio.INPUT, alert: true})
             this.pushChainInput.glitchFilter(10000)
-            this.pushChainInput.on('alert', (level, input) => {
-                console.log("Chain pusher level: ", level)
-            })
-            this.pushRelay.toggleOff()
-            this.clampRelay.toggleOff()
+            this.stop()
         }
         
         return ChainGuard.instance
@@ -23,37 +20,58 @@ module.exports = class ChainGuard{
     stop(){
 		this.pushRelay.toggleOff()
         this.clampRelay.toggleOff()
+        this.moveRelay.toggleOff()
+        clearActiveThings()
 	}
 
     clampChain() {
         console.log('Clamping chain')
         return new Promise((resolve,reject) => {
-            resolve(this.clampRelay.toggleOn())
+            this.clampRelay.toggleOn()
+            resolve(globals.setChainClamped(true))
         }) 
     }
 
     releaseChain() {
         console.log('Releasing chain')
         return new Promise((resolve,reject) => {
-            resolve(this.clampRelay.toggleOff())
+            this.clampRelay.toggleOff()
+            resolve(globals.setChainClamped(false))
         })
     }
     
     swingChain() {
 		return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(this.moveRelay.toggleOn())
+                this.moveRelay.toggleOn()
+                resolve(globals.setLenghtGrinderActiveState(true))
             }, 4000)
             setTimeout(() => {
-                resolve(this.moveRelay.toggleOff())
+                this.moveRelay.toggleOff()
+                resolve(globals.setLenghtGrinderActiveState(false))
             }, 4900)
         })
-	}
+    }
+    
+    checkLengthGrinding() {
+        return new Promise((resolve, reject) => {
+            this.moveRelay.toggleOn()
+            resolve(globals.setLenghtGrinderActiveState(true))
+        })
+    }
+
+    quitCheckLengthGrinding() {
+        return new Promise((resolve, reject) => {
+            this.moveRelay.toggleOff()
+            resolve(globals.setLenghtGrinderActiveState(false))
+        })
+    }
 
     pushChain() {
         console.log('Pushing chain')
         return new Promise((resolve, reject) => {
             this.pushRelay.toggleOn()
+            globals.setChainPusherState(true)
             this.pushChainInput.on('alert', async (level, input) => {
                 console.log(level)
                 if(level === 1) {
@@ -70,6 +88,7 @@ module.exports = class ChainGuard{
             this.pushRelay.toggleOff()
             this.pushChainInput.on('alert', (level, input) => {
                 if(level === 0) {
+                    globals.setChainPusherState(false)
                     resolve(level)
                 }
             })

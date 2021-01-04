@@ -1,39 +1,64 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
     <!-- Only works in online mode <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
-    <!-- Works offline --> <link rel="stylesheet" href="bootstrap.min.css">
+    <!-- Works offline -->
+    <link rel="stylesheet" href="bootstrap.min.css">
     <style>
         .m-flex-1 {
             flex: 1
         }
 
-        html, body, #settingsPage {
+        html,
+        body,
+        #settingsPage {
             height: 100%;
         }
     </style>
     <title>Chain Grinder</title>
-  </head>
-  <body class="d-flex flex-column">
+</head>
+
+<body class="d-flex flex-column" style="overflow: hidden;">
     <div class="d-flex justify-content-between ml-3 mr-3" id="statusBar">
         <label class="nav-link">KEDJE SLIP</label>
         <label class="nav-link" id="statusLabel">Ansluter - </label>
         <label class="nav-link" id="timeLabel"></label>
     </div>
     <div id="settingsPage" class="m-flex-1">
-            <div class="d-flex m-flex-1 mt-3">
-                <button class="btn btn-success m-flex-1 ml-3 mr-5" id="lowerGrinderBtn" type="button" onclick="lowerTapped()">Sänk slip</button>
-                <button class="btn btn-success m-flex-1 mr-3" id="raiseGrinderBtn" type="button" onclick="liftTapped()">Höj slip</button>
-            </div>
-            <div class="d-flex m-flex-1 mt-3">
-                <button class="btn btn-success m-flex-1 ml-3 mr-5" id="angleGrinderBtn" type="button" onclick="alterAngleTapped()">Vinkla slip</button>
-                <button class="btn btn-success m-flex-1 mr-3" id="startSetupBtn" type="button" onclick="setupSequenceTapped()">Starta inställnings sekvens</button>
-            </div>
+        <div class="d-flex m-flex-1 mt-3">
+            <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="lowerGrinderBtn" type="button"
+                onclick="lowerTapped()">Sänk slip</button>
+            <button class="btn btn-danger m-flex-1 mr-3" id="raiseGrinderBtn" type="button" onclick="liftTapped()">Höj
+                slip</button>
+            <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="angleGrinderBtn" type="button"
+                onclick="alterAngleTapped()">Vinkla slip</button>
+        </div>
+        <div class="d-flex m-flex-1 mt-3">
+            <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="moveChainBtn" type="button"
+                onclick="moveChain()">Putta Kedja</button>
+            <button class="btn btn-primary m-flex-1 mr-3" id="startGrinderBtn" type="button"
+                onclick="startGrinder()">Starta slip</button>
+            <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="stopGrinderBtn" type="button"
+                onclick="stopGrinder()">Stanna slip</button>
+        </div>
+        <div class="d-flex m-flex-1 mt-3">
+            <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="checkLengthGrindingBtn" type="button"
+                onclick="checkLengthGrinding()">Konroll Längdslip</button>
+            <button class="btn btn-danger m-flex-1 mr-3" id="quitCheckLengthGrindingBtn" type="button"
+                onclick="quitCheckLengthGrinding()">Avsluta Kontroll Längdslip</button>
+        </div>
+        <div class="d-flex m-flex-1 mt-3">
+            <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="clapmChainBtn" type="button"
+                onclick="clampChain()">Kläm fast kedja</button>
+            <button class="btn btn-danger m-flex-1 mr-3" id="releaseChainBtn" type="button"
+                onclick="releaseChain()">Släpp
+                kedja</button>
         </div>
     </div>
     <div id="homePage" class="m-flex-1">
@@ -44,32 +69,35 @@
                 </div>
                 <input type="text" class="form-control" id="toothInput" placeholder="Antal tänder">
                 <div class="input-group-append">
-					<button class="btn btn-success m-flex-1 mr-3" type="button" id="toothInputOK" onclick="setNumberOfTooths()">Tillämpa</button>
+                    <button class="btn btn-success m-flex-1 mr-3" type="button" id="toothInputOK"
+                        onclick="setNumberOfTooths()">Tillämpa</button>
                 </div>
-                </div>                  
             </div>
-            <div class="d-flex m-flex-1 mt-3">
-                <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="cancelBtn" type="button" onclick="stop()">Avbryt</button>
-                <button class="btn btn-success m-flex-1 mr-3" id="startBtn" type="button" onclick="start()">Starta</button>
+        </div>
+        <div class="d-flex m-flex-1 mt-3">
+            <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="cancelBtn" type="button"
+                onclick="stop()">Avbryt</button>
+            <button class="btn btn-success m-flex-1 mr-3" id="startBtn" type="button" onclick="start()">Starta</button>
+        </div>
+        <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
+            <div class="input-group-prepend m-flex-1 mr-5">
+                <span class="input-group-text" id="totalTooths">Totalt antal tänder: </span>
             </div>
-            <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
-                <div class="input-group-prepend m-flex-1 mr-5">
-                    <span class="input-group-text" id="totalTooths">Totalt antal tänder: </span>
-                </div>
-                <div class="input-group-prepend m-flex-1">
-                    <span class="input-group-text" id="toothsLeft">Antal tänder kvar: </span>
-                </div>
+            <div class="input-group-prepend m-flex-1">
+                <span class="input-group-text" id="toothsLeft">Antal tänder kvar: </span>
             </div>
         </div>
     </div>
+    </div>
     <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
         <div class="d-flex flex-row m-flex-1" id="navbarNav">
-            <button class="btn btn-success m-flex-1 mr-5" type="button" onclick="settingsTapped()">Inställningar</button>
-            <button class="btn btn-success m-flex-1" type="button" onclick="homeTapped()">Hem</button>
+            <button class="btn btn-success m-flex-1 mr-5" type="button" onclick="settingsTapped()">Manuell
+                Kontroll</button>
+            <button class="btn btn-success m-flex-1" type="button" onclick="homeTapped()">Automatisk Slipning</button>
         </div>
     </nav>
     <script type="text/javascript">
-        let socket 
+        let socket
         const statusLabel = document.getElementById('statusLabel')
         const timeLabel = document.getElementById('timeLabel')
         const settingsPage = document.getElementById('settingsPage')
@@ -81,23 +109,36 @@
         const lowerGrinderBtn = document.getElementById('lowerGrinderBtn')
         const raiseGrinderBtn = document.getElementById('raiseGrinderBtn')
         const angleGrinderBtn = document.getElementById('angleGrinderBtn')
-        const startSetupBtn = document.getElementById('startSetupBtn')
         const cancelBtn = document.getElementById('cancelBtn')
         const startBtn = document.getElementById('startBtn')
-        
+        const moveChainBtn = document.getElementById('moveChainBtn')
+        const startGrinderBtn = document.getElementById('startGrinderBtn')
+        const stopGrinderBtn = document.getElementById('stopGrinderBtn')
+        const checkLengthGrindingBtn = document.getElementById('checkLengthGrindingBtn')
+        const quitCheckLengthGrindingBtn = document.getElementById('quitCheckLengthGrindingBtn')
+        const clapmChainBtn = document.getElementById('clapmChainBtn')
+        const releaseChainBtn = document.getElementById('releaseChainBtn')
+
+
         toothInput.oninput = inputChanged
         toothInputOK.disabled = true
-        
+
         let connected = false
 
         let grinder = {
             status: 'RESTING',
+            chainClamped: false,
+            grinderLowered: false,
+            grinderOn: false,
+            pushingChain: false,
+            lenghtGrinderActive: false,
+            angleAltered: false,
             numberOfToothsLeft: 0,
             settings: {
                 totalNumberOfTooths: 0,
             }
         }
-        
+
         function onLoad() {
             connect()
             settingsTapped()
@@ -105,156 +146,196 @@
         }
 
         onLoad()
-        
-        function handleMessage(msg) {
-			switch(msg.type) {
-				case 'STATUS':
-					updateStatusLabel(msg.status)
-				break;
-				case 'NUMBEROFTOOTHS':
-					updateNumberOfToothsLeft(msg.numberOfToothsLeft)
-				break;
-				case 'TOTALTOOTHS':
-					updateTotalTooths(msg.value)
-				break;
-				case 'SETTINGS':
-					updateSettings(msg.settings)
-				break;
-				case 'COMPLETE':
-					updateEverything(msg.complete)
-				break;
-			}
-		}
-		
-		function updateTotalTooths(val) {
-			grinder.settings.totalNumberOfTooths = val
-			if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null) {
-				startBtn.disabled = true
-			} else {
-				startBtn.disabled = false
-			}
-			totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
-		}
 
-		function updateStatusLabel(status) {
-			grinder.status = status
-			statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
-			if (grinder.status.includes('SETUP')) {
-				startSetupBtn.innerHTML = 'Avbryt inställnings sekvens'
-				startSetupBtn.classList.remove("btn-success")
-				startSetupBtn.classList.add("btn-danger")
-			} else {
-				startSetupBtn.innerHTML = 'Starta inställnings sekvens'
-				startSetupBtn.classList.remove("btn-danger")
-				startSetupBtn.classList.add("btn-success")
-			}
-			updateButtonsDisabledState()
-		}
-		
-		function updateNumberOfToothsLeft(tooths) {
-			grinder.numberOfToothsLeft = tooths
-			toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
-		}
-		
-		function updateSettings(settings) {
-			grinder.settings = settings
-			totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
-		}
-		
-		function updateEverything(everything) {
-			grinder = everything
-			updateGUI()
-		}
-		
-		function updateGUI() {
-			statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
-			toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
-			totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
-			if (grinder.status.includes('SETUP')) {
-				startSetupBtn.innerHTML = 'Avbryt inställnings sekvens'
-				startSetupBtn.classList.remove("btn-success")
-				startSetupBtn.classList.add("btn-danger")
-			} else {
-				startSetupBtn.innerHTML = 'Starta inställnings sekvens'
-				startSetupBtn.classList.remove("btn-danger")
-				startSetupBtn.classList.add("btn-success")
-			}
-			updateButtonsDisabledState()
-		}
-		
-		function updateButtonsDisabledState() {
-			if(grinder.status !== 'RESTING') {
-				angleGrinderBtn.disabled = true
-				lowerGrinderBtn.disabled = true
-				raiseGrinderBtn.disabled = true
-				startBtn.disabled = true
-				if(grinder.status !== 'GRINDING') {
-					console.log("Disable  cancel button: ",grinder.status) 
-					cancelBtn.disabled = true
-				} else {
-					cancelBtn.disabled = false
-				}
-				if(grinder.status === 'SETUPSTARTED') {
-					startSetupBtn.disabled = false
-				} else {
-					startSetupBtn.disabled = true
-				}
-				toothInputOK.disabled = true
-			} else {
-				angleGrinderBtn.disabled = false
-				lowerGrinderBtn.disabled = false
-				raiseGrinderBtn.disabled = false
-				startSetupBtn.disabled = false
-				if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null) {
-				startBtn.disabled = true
-				} else {
-					startBtn.disabled = false
-				}
-				cancelBtn.disabled = true
-			}
-		}
-		
-		function getStatusMsg() {
-			switch(grinder.status) {
-				case 'RESTING':
-					return 'Vilar'
-				break;
-				case 'LOWERING':
-					return 'Sänker...'
-				break;
-				case 'LIFTING':
-					return 'Lyfter...'
-				break;
-				case 'ALTERING ANGLE':
-					return 'Vinklar...'
-				break;
-				case 'GRINDING':
-					return 'Slipar...'
-				break;
-				case 'STOP':
-					return 'Stannar...'
-				break;
-				case 'SETUP':
-					return 'Startar inställnings läge...'
-				break;
-				case 'SETUPSTARTED':
-					return 'Inställnings läge aktivt'
-				break;
-				break;
-			}
-			
-		}
-		
-		////////////////////////////// GUI Stuff //////////////////////////////////////////
-		
-		function inputChanged(e) {
-			console.log('Input changed: ', e.target.value)
-			if(e.target.value.length > 0) {
-				toothInputOK.disabled = false
-			} else {
-				toothInputOK.disabled = true
-			}
-		}
+        function handleMessage(msg) {
+            switch (msg.type) {
+                case 'STATUS':
+                    updateStatusLabel(msg.status)
+                    break;
+                case 'NUMBEROFTOOTHS':
+                    updateNumberOfToothsLeft(msg.numberOfToothsLeft)
+                    break;
+                case 'TOTALTOOTHS':
+                    updateTotalTooths(msg.value)
+                    break;
+                case 'SETTINGS':
+                    updateSettings(msg.settings)
+                    break;
+                case 'COMPLETE':
+                    updateEverything(msg.complete)
+                    break;
+                case 'CHAINCLAMPED':
+                    grinder.chainClamped = val
+                    updateSetupButtons()
+                    break;
+                case 'GRINDERLOWERED':
+                    grinder.grinderLowered = val
+                    updateSetupButtons()
+                    break;
+                case 'GRINDERON':
+                    grinder.grinderOn = val
+                    updateSetupButtons()
+                    break;
+                case 'CHAINPUSHER':
+                    grinder.pushingChain = val
+                    updateSetupButtons()
+                    break;
+                case 'ALTEREDANGLE':
+                    grinder.angleAltered = val
+                    updateSetupButtons()
+                    break;
+                case 'LENGHTGRINDER':
+                    grinder.lenghtGrinderActive = val
+                    updateSetupButtons()
+                    break;
+            }
+        }
+
+        function updateSetupButtons() {
+            if (grinder.status.includes('GRINDING')) {
+                checkLengthGrindingBtn.disabled = true
+                quitCheckLengthGrindingBtn.disabled = true
+                angleGrinderBtn.disabled = true
+                moveChainBtn.disabled = true
+                startGrinderBtn.disabled = true
+                stopGrinderBtn.disabled = true
+                lowerGrinderBtn.disabled = true
+                raiseGrinderBtn.disabled = true
+                clapmChainBtn.disabled = true
+                releaseChainBtn.disabled = true
+                return
+            }
+            checkLengthGrindingBtn.disabled = grinder.lenghtGrinderActive
+            quitCheckLengthGrindingBtn.disabled = !grinder.lenghtGrinderActive
+            angleGrinderBtn.disabled = grinder.grinderLowered
+            moveChainBtn.disabled = grinder.pushingChain || grinder.chainClamped || grinder.lenghtGrinderActive || grinder.grinderLowered
+            startGrinderBtn.disabled = grinder.grinderOn || grinder.grinderLowered
+            stopGrinderBtn.disabled = !grinder.grinderOn
+            lowerGrinderBtn.disabled = grinder.grinderLowered
+            raiseGrinderBtn.disabled = !grinder.grinderLowered
+            clapmChainBtn.disabled = grinder.chainClamped || grinder.pushingChain
+            releaseChainBtn.disabled = !grinder.chainClamped
+        }
+
+        function updateTotalTooths(val) {
+            grinder.settings.totalNumberOfTooths = val
+            if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null) {
+                startBtn.disabled = true
+            } else {
+                startBtn.disabled = false
+            }
+            totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
+        }
+
+        function updateStatusLabel(status) {
+            grinder.status = status
+            statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
+            updateButtonsDisabledState()
+        }
+
+        function updateNumberOfToothsLeft(tooths) {
+            grinder.numberOfToothsLeft = tooths
+            toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
+        }
+
+        function updateSettings(settings) {
+            grinder.settings = settings
+            totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
+        }
+
+        function updateEverything(everything) {
+            grinder = everything
+            updateGUI()
+        }
+
+        function updateGUI() {
+            statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
+            toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
+            totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
+            updateButtonsDisabledState()
+        }
+
+        function updateButtonsDisabledState() {
+            updateSetupButtons()
+            if (grinder.status !== 'RESTING') {
+                startBtn.disabled = true
+                if (grinder.status !== 'GRINDING') {
+                    console.log("Disable  cancel button: ", grinder.status)
+                    cancelBtn.disabled = true
+                } else {
+                    cancelBtn.disabled = false
+                }
+                toothInputOK.disabled = true
+            } else {
+                if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null) {
+                    startBtn.disabled = true
+                } else {
+                    startBtn.disabled = false
+                }
+                cancelBtn.disabled = true
+            }
+        }
+
+        function getStatusMsg() {
+            switch (grinder.status) {
+                case 'RESTING':
+                    return 'Vilar'
+                    break;
+                case 'LOWERING':
+                    return 'Sänker...'
+                    break;
+                case 'LIFTING':
+                    return 'Lyfter...'
+                    break;
+                case 'ALTERING ANGLE':
+                    return 'Vinklar...'
+                    break;
+                case 'GRINDING':
+                    return 'Slipar...'
+                    break;
+                case 'STOP':
+                    return 'Stannar...'
+                    break;
+                case 'SETUP':
+                    return 'Startar inställnings läge...'
+                    break;
+                case 'SETUPSTARTED':
+                    return 'Inställnings läge aktivt'
+                    break;
+                case 'STARTINGGRIDNER':
+                    return 'Startar slip...'
+                    break;
+                case 'STOPPINGGRINDER':
+                    return 'Stannar slip...'
+                    break;
+                case 'PUSHINGCHAIN':
+                    return 'Flyttar kedja...'
+                    break;
+                case 'CHECKINGLENGTHGRINDING':
+                    return 'Aktiverar inställning av längdslip...'
+                    break;
+                case 'QUITCHECKLENGTHGRINDING':
+                    return 'Avslutar inställning av längdslip...'
+                    break;
+                case 'RELEASINGCHAIN':
+                    return 'Släpper Kedja...'
+                    break;
+                case 'CLAMPINGCHAIN':
+                    return 'Klämmer kedja...'
+            }
+
+        }
+
+        ////////////////////////////// GUI Stuff //////////////////////////////////////////
+
+        function inputChanged(e) {
+            console.log('Input changed: ', e.target.value)
+            if (e.target.value.length > 0) {
+                toothInputOK.disabled = false
+            } else {
+                toothInputOK.disabled = true
+            }
+        }
 
 
         ///////////////////////////// Socket stuff ////////////////////////////////////////
@@ -269,17 +350,17 @@
                 connected = true
                 updateGUI()
             }
-    
+
             socket.onmessage = (evt) => {
                 console.log('Recieved message: ', evt.data)
-				handleMessage(JSON.parse(evt.data))
+                handleMessage(JSON.parse(evt.data))
             }
-    
+
             socket.onclose = () => {
                 console.log('Connection is closed')
                 connected = false
                 updateGUI()
-                setTimeout(function() {
+                setTimeout(function () {
                     connect();
                 }, 1000);
             }
@@ -313,28 +394,28 @@
         }
 
         ////////////////////////// Grinder stuff ////////////////////////////////
-        
+
         function setNumberOfTooths() {
-			console.log('Number of tooths: ', toothInput.value)
-			socket.send(JSON.stringify({ command: 'NUMBEROFTOOTHS', value: parseInt(toothInput.value) }))
-			toothInput.value = ''
-			toothInputOK.disabled = true
-		}
+            console.log('Number of tooths: ', toothInput.value)
+            socket.send(JSON.stringify({ command: 'NUMBEROFTOOTHS', value: parseInt(toothInput.value) }))
+            toothInput.value = ''
+            toothInputOK.disabled = true
+        }
 
         function lowerTapped() {
-            socket.send(JSON.stringify({ command: 'LOWER'}))
+            socket.send(JSON.stringify({ command: 'LOWER' }))
         }
 
         function liftTapped() {
-            socket.send(JSON.stringify({ command: 'LIFT'}))
+            socket.send(JSON.stringify({ command: 'LIFT' }))
         }
 
         function alterAngleTapped() {
-            socket.send(JSON.stringify({ command: 'ALTER ANGLE'}))
+            socket.send(JSON.stringify({ command: 'ALTER ANGLE' }))
         }
 
         function setupSequenceTapped() {
-            socket.send(JSON.stringify({ command: 'SETUP SEQUENCE'}))
+            socket.send(JSON.stringify({ command: 'SETUP SEQUENCE' }))
         }
 
         function start() {
@@ -347,6 +428,34 @@
 
         function status() {
             socket.send(JSON.stringify({ command: 'STATUS' }))
+        }
+
+        function startGrinder() {
+            socket.send(JSON.stringify({ command: 'STARTGRINDER' }))
+        }
+
+        function stopGrinder() {
+            socket.send(JSON.stringify({ command: 'STOPGRINDER' }))
+        }
+
+        function moveChain() {
+            socket.send(JSON.stringify({ command: 'PUSHCHAIN' }))
+        }
+
+        function checkLengthGrinding() {
+            socket.send(JSON.stringify({ command: 'CHECKLENGTHGRINDING' }))
+        }
+
+        function quitCheckLengthGrinding() {
+            socket.send(JSON.stringify({ command: 'QUITCHECKLENGTHGRINDING' }))
+        }
+
+        function clampChain() {
+            socket.send(JSON.stringify({ command: 'CLAMPCHAIN' }))
+        }
+
+        function releaseChain() {
+            socket.send(JSON.stringify({ command: 'RELEASECHAIN' }))
         }
 
         ///////////////////////// Time stuff /////////////////////////////////
@@ -364,11 +473,12 @@
         }
 
         function padWithZero(i) {
-            if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+            if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
             return i;
         }
 
 
     </script>
-  </body>
+</body>
+
 </html>

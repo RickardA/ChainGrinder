@@ -5,31 +5,66 @@ const socket = new Socket()
 
 let state = {
     status: 'RESTING',
+    chainClamped: false,
+    grinderLowered: false,
+    grinderOn: false,
+    pushingChain: false,
+    lenghtGrinderActive: false,
+    angleAltered: false,
     numberOfToothsLeft: 0,
     settings: {
         totalNumberOfTooths: 0,
     }
 }
 
-socket.on('connected',(clientID) => {
-    socket.sendMessageToClient({type: 'COMPLETE', complete: state},clientID)
+socket.on('connected', (clientID) => {
+    socket.sendMessageToClient({ type: 'COMPLETE', status: state.status }, clientID)
 })
 
 
-function setStatus(val) {
+function setStatus (val) {
     state.status = val
-    socket.sendMessage({type: 'STATUS', status: state.status})
+    socket.sendMessage({type: 'STATUS', status: state.status })
 }
 
-function setSettings(val) {
+function setChainClamped (val) {
+    chainClamped = val
+    socket.sendMessage({type: 'CHAINCLAMPED', chainClamped: state.chainClamped })
+}
+
+function setGrinderLowered (val) {
+    grinderLowered = val
+    socket.sendMessage({type: 'GRINDERLOWERED', grinderLowered: state.grinderLowered })
+}
+
+function setGrinderOn (val) {
+    grinderOn = val
+    socket.sendMessage({type: 'GRINDERON', grinderOn: state.grinderOn })
+}
+
+function setChainPusherState (val) {
+    pushingChain = val
+    socket.sendMessage({type: 'CHAINPUSHER', pushingChain: state.pushingChain })
+}
+
+function setAngleAltered (val) {
+    angleAltered = val
+    socket.sendMessage({ type: 'ALTEREDANGLE', angleAltered: state.angleAltered })
+}
+
+function setLenghtGrinderActiveState (val) {
+    lengthGrinderActive = val
+    socket.sendMessage({ type: 'LENGHTGRINDER', lenghtGrinderActive: state.lenghtGrinderActive })
+}
+
+async function setSettings (val) {
     state.settings = val
-    socket.sendMessage({type: 'SETTINGS', settings: state.settings})
+    socket.sendMessage({ type: 'SETTINGS', settings: state.settings })
 }
 
-function setToothsLeft(val) {
-	console.log('Setting tooths left: ', val)
-    state.numberOfToothsLeft = parseInt(val)
-    socket.sendMessage({type: 'NUMBEROFTOOTHS', numberOfToothsLeft: state.numberOfToothsLeft})
+function setToothsLeft (val) {
+    state.numberOfToothsLeft = val
+    socket.sendMessage({ type: 'NUMBEROFTOOTHS', numberOfToothsLeft: state.numberOfToothsLeft })
 }
 
 function setTotalNumberOfTooths(val) {
@@ -37,24 +72,35 @@ function setTotalNumberOfTooths(val) {
 	socket.sendMessage({type: 'TOTALTOOTHS', value: val})
 }
 
-function getState() {
+function getState () {
     return state
 }
 
-function getStatus() {
-	return state.status
-}
-
-function getSettings() {
+function getSettings () {
     return state.settings
 }
 
-function getToothsLeft() {
+function getToothsLeft (val) {
     return state.numberOfToothsLeft
 }
 
 function getTotalTooths() {
-	return state.settings.totalNumberOfTooths
+    return state.settings.totalNumberOfTooths
 }
 
-module.exports = { getStatus, getState, setStatus, setSettings, setToothsLeft, getSettings, getToothsLeft, setTotalNumberOfTooths, getTotalTooths }
+module.exports = {
+    getState,
+    setStatus,
+    setSettings,
+    setToothsLeft,
+    getSettings,
+    getToothsLeft,
+    setChainClamped,
+    setGrinderLowered,
+    setGrinderOn,
+    setChainPusherState,
+    setLenghtGrinderActiveState,
+    setAngleAltered,
+    getTotalTooths,
+    setTotalNumberOfTooths
+}

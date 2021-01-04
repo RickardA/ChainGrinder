@@ -35,11 +35,11 @@ module.exports = class Program extends EventEmitter {
 	}
 
     async startProgram() {
+        this.grinder.stop()
+        this.chainGuard.stop()
         setToothsLeft(getTotalTooths())
         setStatus('GRINDING')
-        console.log('Tooths left: ', getToothsLeft())
-        console.log('Total tooths: ', getTotalTooths())
-        console.log('Status: ', getStatus())
+        setActiveThing('GRINDING')
 		aLoop: do{
             await Promise.all([this.grinder.alterAngle(), this.chainGuard.pushChain()])
             if(getStatus() === 'STOP') break
@@ -51,10 +51,7 @@ module.exports = class Program extends EventEmitter {
             if(getStatus() === 'STOP') break
             await this.chainGuard.releaseChain()
             if(getStatus() === 'STOP') break
-            console.log('One iteration done')
             setToothsLeft(getToothsLeft() - 1)
-            console.log('Tooths left: ', getToothsLeft())
-			console.log('Total tooths: ', getTotalTooths())
             if(getStatus() === 'STOP') break
         }while(getToothsLeft() !== 0 && getStatus() !== 'STOP')
         
@@ -91,9 +88,49 @@ module.exports = class Program extends EventEmitter {
 
     async lowerGrinder() {
         setStatus('LOWERING')
-        console.log('LOWERING GRINDER')
         await this.grinder.lower()
-        console.log('GINDER LOWERED, RESTING')
+        setStatus('RESTING')
+    }
+
+    async startGrinder() {
+        setStatus('STARTINGGRIDNER')
+        await this.grinder.turnOn()
+        setStatus('RESTING')
+    }
+
+    async stopGrinder() {
+        setStatus('STOPPINGGRIDNER')
+        await this.grinder.turnOff()
+        setStatus('RESTING')
+    }
+
+    async pushChain() {
+        setStatus('PUSHINGCHAIN')
+        await this.chainGuard.pushChain()
+        setStatus('RESTING')
+    }
+
+    async clampChain() {
+        setStatus('CLAMPINGCHAIN')
+        await this.chainGuard.clampChain()
+        setStatus('RESTING')
+    }
+
+    async releaseChain() {
+        setStatus('RELEASINGCHAIN')
+        await this.chainGuard(this.releaseChain())
+        setStatus('RELEASE')
+    }
+
+    async checkLengthGrinding() {
+        setStatus('CHECKINGLENGTHGRINDING')
+        await this.chainGuard.checkLengthGrinding()
+        setStatus('RESTING')
+    }
+
+    async quitCheckLengthGrinding() {
+        setStatus('QUITCHECKLENGTHGRINDING')
+        await this.chainGuard.quitCheckLengthGrinding()
         setStatus('RESTING')
     }
 

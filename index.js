@@ -32,34 +32,49 @@ process.on('SIGINT', () => {
 async function handleCommand(msg) {
     switch (msg.command) {
         case 'LOWER':
-            console.log('LOWER')
-            await program.lowerGrinder()
+            program.lowerGrinder()
             break;
         case 'LIFT':
-            console.log('LIFT')
-            await program.liftGrinder()
+            program.liftGrinder()
             break;
         case 'ALTER ANGLE':
-            console.log('ALTER ANGLE')
-            await program.alterGrinderAngle()
+            program.alterGrinderAngle()
             break;
         case 'SETUP SEQUENCE':
-            console.log('SETUP SEQUENCE')
-            await program.runSetupSequence()
+            program.runSetupSequence()
             break;
         case 'SETTINGS':
-            console.log('SETTINGS: ',msg.settings)
             setSettings(msg.settings)
         case 'NUMBEROFTOOTHS':
 			setTotalNumberOfTooths(msg.value)
         break;
         case 'START':
-            console.log('START')
             program.startProgram()
             break;
         case 'STOP':
             myEmitter.emitEvent('STOP')
             setStatus('STOP')
+            break;
+        case 'STARTGRINDER':
+            program.startGrinder()
+            break;
+        case 'STOPGRINDER':
+            program.stopGrinder()
+            break;
+        case 'CLAMPCHAIN': 
+            program.clampChain()
+            break;
+        case 'RELEASECHAIN':
+            program.releaseChain()
+            break;
+        case 'PUSHCHAIN':
+            program.pushChain()
+            break;
+        case 'CHECKLENGTHGRINDING':
+            program.checkLengthGrinding()
+            break;
+        case 'QUITCHECKLENGTHGRINDING':
+            program.quitCheckLengthGrinding()
             break;
     }
 }

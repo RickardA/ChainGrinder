@@ -1,5 +1,6 @@
 const Relay = require('./Relay')
 const Gpio = require('pigpio').Gpio
+const globals = require('../globals')
 
 module.exports = class Grinder {
 
@@ -10,22 +11,18 @@ module.exports = class Grinder {
             this.angleRelay = new Relay(process.env.GRINDER_ANGLE_PIN,false)
             console.log('Input pin: ',process.env.GRINDER_LOWERED_INPUT)
             this.grinderInput = new Gpio(process.env.GRINDER_LOWERED_INPUT >> 0,{mode: Gpio.INPUT, alert: true})
-           /* this.grinderInput.on('alert', (level, input) => {
-                console.log('grinderLevel common', level,)
-             })*/
-
-			this.liftRelay.toggleOff()
-			this.motorRelay.toggleOff()
             this.grinderInput.glitchFilter(10000)
             this.liftTimerIsStarted = false
             this.isAtOrigin = true
+            this.stop()
         }
         return Grinder.instance
     }
     
     stop() {
 		this.liftRelay.toggleOff()
-		this.motorRelay.toggleOff()
+        this.motorRelay.toggleOff()
+        clearActiveThings()
 	}
 
     turnOn() {
@@ -33,6 +30,7 @@ module.exports = class Grinder {
         return new Promise((resolve, reject) => {
             if (!this.motorRelay.isToggledOn()) {
                 this.motorRelay.toggleOn()
+                globals.setGrinderOn(true)
                 setTimeout(() => { resolve('Grinder on')},5000)
             } else {
                 resolve('Grinder already on')
@@ -44,7 +42,8 @@ module.exports = class Grinder {
     turnOff() {
         console.log('Stopping grinder')
         return new Promise((resolve, reject) => {
-            resolve(this.motorRelay.toggleOff())
+            this.motorRelay.toggleOff()
+            resolve(globals.setGrinderOn(false))
         })
     }
 
@@ -55,6 +54,7 @@ module.exports = class Grinder {
             this.grinderInput.on('alert', (level, input) => {
                 console.log('grinderLevel lower ', level)
                  if (level == 1) {
+                     globals.setGrinderLowered(true)
                      resolve(this.grinderInput.removeAllListeners('alert'))
                  }
              })
@@ -69,6 +69,7 @@ module.exports = class Grinder {
             this.grinderInput.on('alert', (level, input) => {
                 console.log('grinderLevel lift', level,)
                  if (level == 0) {
+                    globals.setGrinderLowered(false)
                     resolve(this.grinderInput.removeAllListeners('alert'))
                  }
              })
@@ -83,9 +84,11 @@ module.exports = class Grinder {
         console.log('altering grinder angle')
         return new Promise((resolve, reject) => {
             if (this.angleRelay.isToggledOn()) {
-                resolve(this.angleRelay.toggleOff())
+                this.angleRelay.toggleOff()
+                resolve(globals.setAngleAltered(false))
             } else {
-                resolve(this.angleRelay.toggleOn())
+                this.angleRelay.toggleOn()
+                resolve(globals.setAngleAltered(true))
             }
         })
     }
