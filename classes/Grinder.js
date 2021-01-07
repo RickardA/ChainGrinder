@@ -22,7 +22,6 @@ module.exports = class Grinder {
     stop() {
 		this.liftRelay.toggleOff()
         this.motorRelay.toggleOff()
-        clearActiveThings()
 	}
 
     turnOn() {
