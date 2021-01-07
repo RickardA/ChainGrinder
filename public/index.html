@@ -148,6 +148,7 @@
         onLoad()
 
         function handleMessage(msg) {
+			console.log("grinder",msg)
             switch (msg.type) {
                 case 'STATUS':
                     updateStatusLabel(msg.status)
@@ -165,33 +166,34 @@
                     updateEverything(msg.complete)
                     break;
                 case 'CHAINCLAMPED':
-                    grinder.chainClamped = val
+                    grinder.chainClamped = msg.val
                     updateSetupButtons()
                     break;
                 case 'GRINDERLOWERED':
-                    grinder.grinderLowered = val
+                    grinder.grinderLowered = msg.val
                     updateSetupButtons()
                     break;
                 case 'GRINDERON':
-                    grinder.grinderOn = val
+                    grinder.grinderOn = msg.val
                     updateSetupButtons()
                     break;
                 case 'CHAINPUSHER':
-                    grinder.pushingChain = val
+                    grinder.pushingChain = msg.val
                     updateSetupButtons()
                     break;
                 case 'ALTEREDANGLE':
-                    grinder.angleAltered = val
+                    grinder.angleAltered = msg.val
                     updateSetupButtons()
                     break;
                 case 'LENGHTGRINDER':
-                    grinder.lenghtGrinderActive = val
+                    grinder.lenghtGrinderActive = msg.val
                     updateSetupButtons()
                     break;
             }
         }
 
         function updateSetupButtons() {
+			console.log("updateSetupButtons")
             if (grinder.status.includes('GRINDING')) {
                 checkLengthGrindingBtn.disabled = true
                 quitCheckLengthGrindingBtn.disabled = true
@@ -228,7 +230,7 @@
         }
 
         function updateStatusLabel(status) {
-            grinder.status = status
+            if(grinder.status) grinder.status = status
             statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
             updateButtonsDisabledState()
         }
@@ -244,11 +246,13 @@
         }
 
         function updateEverything(everything) {
+			console.log("update everything", everything)
             grinder = everything
             updateGUI()
         }
 
         function updateGUI() {
+			console.log("grind",grinder)
             statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
             toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
             totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`

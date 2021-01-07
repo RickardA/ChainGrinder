@@ -39,7 +39,6 @@ module.exports = class Program extends EventEmitter {
         this.chainGuard.stop()
         setToothsLeft(getTotalTooths())
         setStatus('GRINDING')
-        setActiveThing('GRINDING')
 		aLoop: do{
             await Promise.all([this.grinder.alterAngle(), this.chainGuard.pushChain()])
             if(getStatus() === 'STOP') break
@@ -118,8 +117,8 @@ module.exports = class Program extends EventEmitter {
 
     async releaseChain() {
         setStatus('RELEASINGCHAIN')
-        await this.chainGuard(this.releaseChain())
-        setStatus('RELEASE')
+        await this.chainGuard.releaseChain()
+        setStatus('RESTING')
     }
 
     async checkLengthGrinding() {
