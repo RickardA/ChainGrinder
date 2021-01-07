@@ -2,7 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const app = express()
 const Program = require('./classes/Program')
-const { getState, setSettings, setToothsLeft, setTotalNumberOfTooths, setStatus } = require('./globals')
+const { getState, setSettings, setToothsLeft, setTotalNumberOfTooths, setStatus, setLengthGrindingActive } = require('./globals')
 const Socket = require('./socket')
 const MyEmitter = require('./classes/MyEvent')
 
@@ -45,8 +45,12 @@ async function handleCommand(msg) {
             break;
         case 'SETTINGS':
             setSettings(msg.settings)
+            break;
         case 'NUMBEROFTOOTHS':
 			setTotalNumberOfTooths(msg.value)
+        break;
+        case 'LENGTHGRINDINGACTIVE':
+            setLengthGrindingActive(msg.value)
         break;
         case 'START':
             program.startProgram()

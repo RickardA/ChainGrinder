@@ -14,6 +14,7 @@ let state = {
     numberOfToothsLeft: 0,
     settings: {
         totalNumberOfTooths: 0,
+        lengthGrindingActivated: false,
     }
 }
 
@@ -25,6 +26,11 @@ socket.on('connected', (clientID) => {
 function setStatus (val) {
     state.status = val
     socket.sendMessage({type: 'STATUS', status: val })
+}
+
+function setLengthGrindingActive (val) {
+    state.settings.lengthGrindingActivated = val
+    socket.sendMessage( {type: "LENGTHGRINDINGACTIVATED", val})
 }
 
 function setChainClamped (val) {
@@ -92,8 +98,13 @@ function getTotalTooths() {
     return state.settings.totalNumberOfTooths
 }
 
+function isLengthGrindingActive() {
+    return state.settings.lengthGrindingActivated
+}
+
 module.exports = {
     getState,
+    isLengthGrindingActive,
     getStatus,
     setStatus,
     setSettings,

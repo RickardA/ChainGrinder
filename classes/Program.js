@@ -1,7 +1,7 @@
 const Grinder = require('./Grinder')
 const ChainGuard = require('./ChainGuard')
 const EventEmitter = require('events')
-const { getTotalTooths, setToothsLeft, setStatus, getStatus, getToothsLeft } = require('../globals')
+const { getTotalTooths, setToothsLeft, setStatus, getStatus, getToothsLeft, isLengthGrindingActive } = require('../globals')
 const MyEmitter = require('./MyEvent')
 const Relay = require('./Relay')
 
@@ -46,7 +46,11 @@ module.exports = class Program extends EventEmitter {
             if(getStatus() === 'STOP') break
             await this.grinder.lower()
             if(getStatus() === 'STOP') break
-            await Promise.all([this.grinder.startLiftTimer(), this.chainGuard.swingChain()])
+            if(isLengthGrindingActive()) {
+                await Promise.all([this.grinder.startLiftTimer(), this.chainGuard.swingChain()])
+            } else {
+                await Promise.all([this.grinder.startLiftTimer()])
+            }
             if(getStatus() === 'STOP') break
             await this.chainGuard.releaseChain()
             if(getStatus() === 'STOP') break
