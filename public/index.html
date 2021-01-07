@@ -142,7 +142,7 @@
             numberOfToothsLeft: 0,
             settings: {
                 totalNumberOfTooths: 0,
-                lenghtGrindingActive: false,
+                lengthGrindingActivated: false,
             }
         }
 
@@ -197,7 +197,7 @@
                     updateSetupButtons()
                     break;
                 case 'LENGTHGRINDINGACTIVATED':
-                    grinder.settings.lenghtGrindingActive = msg.val
+                    grinder.settings.lengthGrindingActivated = msg.val
                     checkbox.checked = msg.val
             }
         }
@@ -266,7 +266,7 @@
             statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
             toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
             totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
-            checkbox.checked = grinder.settings.lenghtGrindingActive
+            checkbox.checked = grinder.settings.lengthGrindingActivated
             updateButtonsDisabledState()
         }
 

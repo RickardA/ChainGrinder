@@ -118,5 +118,6 @@ module.exports = {
     setLenghtGrinderActiveState,
     setAngleAltered,
     getTotalTooths,
-    setTotalNumberOfTooths
+    setTotalNumberOfTooths,
+    setLengthGrindingActive
 }
