@@ -21,7 +21,6 @@ module.exports = class ChainGuard{
 		this.pushRelay.toggleOff()
         this.clampRelay.toggleOff()
         this.moveRelay.toggleOff()
-        clearActiveThings()
 	}
 
     clampChain() {
