@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config({ path: '/home/pi/ChainGrinder/.env' })
 const express = require('express')
 const app = express()
 const Program = require('./classes/Program')
