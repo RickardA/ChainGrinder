@@ -10,6 +10,7 @@
     <!-- Only works in online mode <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous"> -->
     <!-- Works offline -->
     <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="keyboard.css">
     <style>
         .m-flex-1 {
             flex: 1
@@ -67,7 +68,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text">Antal tänder</span>
                 </div>
-                <input type="text" class="form-control" id="toothInput" placeholder="Antal tänder">
+                <input type="text" class="form-control use-keyboard-input" id="toothInput" placeholder="Antal tänder">
                 <div class="input-group-append">
                     <button class="btn btn-success m-flex-1 mr-3" type="button" id="toothInputOK"
                         onclick="setNumberOfTooths()">Tillämpa</button>
@@ -125,7 +126,7 @@
         const releaseChainBtn = document.getElementById('releaseChainBtn')
         const checkbox = document.getElementById('checkbox')
 
-
+        
         toothInput.oninput = inputChanged
         toothInputOK.disabled = true
 
@@ -346,8 +347,8 @@
         ////////////////////////////// GUI Stuff //////////////////////////////////////////
 
         function inputChanged(e) {
-            console.log('Input changed: ', e.target.value)
-            if (e.target.value.length > 0) {
+            console.log('Input changed: ', e.value)
+            if (e.value.length > 0) {
                 toothInputOK.disabled = false
             } else {
                 toothInputOK.disabled = true
@@ -501,6 +502,8 @@
 
 
     </script>
+    <script src="keyboard.js"></script>
+    <script defer src="/fontawesome/all.js"></script> <!--load all styles -->
 </body>
 
 </html>
