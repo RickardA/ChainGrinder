@@ -27,7 +27,8 @@
 
 <body class="d-flex flex-column" style="overflow: hidden;">
     <div class="d-flex justify-content-between ml-3 mr-3" id="statusBar">
-        <label class="nav-link">KEDJE SLIP</label>
+        <button class="btn" style="width:10em" type="button"
+                onclick="powerOff()"><i class="fas fa-power-off" style="width:1.5em; height: 1.5em;"></i></button>
         <label class="nav-link" id="statusLabel">Ansluter - </label>
         <label class="nav-link" id="timeLabel"></label>
     </div>
@@ -498,6 +499,10 @@
         function padWithZero(i) {
             if (i < 10) { i = "0" + i };  // add zero in front of numbers < 10
             return i;
+        }
+
+        function powerOff() {
+            socket.send(JSON.stringify({ command: 'SHUTDOWN' }))
         }
 
 
