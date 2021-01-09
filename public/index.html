@@ -48,6 +48,7 @@
             color: white;
             background-color: #212121;
             box-shadow: 1px 3px 10px black;
+            height: 3.5rem;
         }
 
         label {
@@ -61,8 +62,7 @@
 
         #bottomNav {
             color: white;
-            background-color: #212121;
-            box-shadow: 1px 3px 10px black;
+            height: 3.5rem;
         }
 
         label {
@@ -80,10 +80,6 @@
 
         .top-bar-label {
             font-size: 18px;
-        }
-
-        #statusBar {
-            height: 3.5rem;
         }
 
         html,
@@ -135,12 +131,12 @@
             <div class="d-flex m-flex-1 flex-row justify-content-between mt-5 ml-5 mr-5 mb-5">
                 <div class="d-flex flex-column justify-content-around align-items-center">
                     <label class="header-text-size">Slip</label>
-                    <button class="btn btn-primary btn-circle btn-xl" id="lowerGrinderBtn" type="button"
-                        onclick="lowerTapped()">
+                    <button class="btn btn-primary btn-circle btn-xl" id="raiseGrinderBtn" type="button" onclick="liftTapped()">
                         <i class="fas fa-arrow-up"></i>
                     </button>
                     <label class="header-text-size invisible-text">none</label>
-                    <button class="btn btn-danger btn-circle btn-xl" id="raiseGrinderBtn" type="button" onclick="liftTapped()">
+                    <button class="btn btn-primary btn-circle btn-xl" id="lowerGrinderBtn" type="button"
+                        onclick="lowerTapped()">
                         <i class="fas fa-arrow-down"></i>
                     </button>
                 </div>
@@ -256,13 +252,21 @@
                 </div>
             </div>
         </div>
-        <nav class="navbar navbar-light" id="bottomNav">
-            <div class="d-flex flex-row m-flex-1" id="navbarNav">
-                <button class="btn btn-success m-flex-1 mr-5" type="button" onclick="settingsTapped()">Manuell
-                    Kontroll</button>
-                <button class="btn btn-success m-flex-1" type="button" onclick="homeTapped()">Automatisk Slipning</button>
+        <nav class="navbar navbar-light d-flex justify-content-around mb-5" id="bottomNav">
+            <div class="d-flex flex-row justify-content-around ">
+                <button class="btn btn-primary btn-circle btn-lg mr-5"><i class="fas fa-arrow-left"></i></button>
+                <label class="header-text-size mr-3" style="padding: 10px">Manuell Kontroll</label>
+                <label class="header-text-size ml-3" style="padding: 10px">Automatisk Slipning</label>
+                <button class="btn btn-primary btn-circle btn-lg ml-5"><i class="fas fa-arrow-right"></i></button>
             </div>
-        </nav>
+        </nav> 
+        <!--<nav class="navbar navbar-light" id="bottomNav">
+            <div class="d-flex flex-row m-flex-1" id="navbarNav">
+                <button class="btn btn-primary m-flex-1 mr-5" type="button" onclick="settingsTapped()">Manuell
+                    Kontroll</button>
+                <button class="btn btn-primary m-flex-1" type="button" onclick="homeTapped()">Automatisk Slipning </button>
+            </div>
+        </nav> --->
     </div>
     <script type="text/javascript">
         let socket
