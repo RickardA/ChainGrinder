@@ -16,93 +16,254 @@
             flex: 1
         }
 
+        body{
+            background-color: #000421e8;
+            overflow: hidden;
+        }
+
+        .background-image {
+            position: fixed;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            display: block;
+            background-repeat: no-repeat;
+            height: 100%;
+            width: 100%;
+            background-position: center;
+            background-image: url('./oregon_logo.png');
+            filter: blur(7px);
+            
+            }
+
+            .content {
+            height: 100%;
+            position: fixed;
+            left: 0;
+            right: 0;
+            z-index: 9999;
+        }
+
+        #statusBar {
+            color: white;
+            background-color: #212121;
+            box-shadow: 1px 3px 10px black;
+        }
+
+        label {
+            margin: 0;
+        }
+
+        #powerOffBtn {
+            width:10em;
+            color:white;
+        }
+
+        #bottomNav {
+            color: white;
+            background-color: #212121;
+            box-shadow: 1px 3px 10px black;
+        }
+
+        label {
+            color: white;
+            text-align: center;
+        }
+
+        .header-text-size {
+            font-size: 20px;
+        }
+
+        .invisible-text {
+            color: #00000000;
+        }
+
+        .top-bar-label {
+            font-size: 18px;
+        }
+
+        #statusBar {
+            height: 3.5rem;
+        }
+
         html,
         body,
         #settingsPage {
             height: 100%;
         }
+
+        .btn-circle {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            padding: 6px 0;
+            font-size: 12px;
+            line-height: 1.428571429;
+            border-radius: 15px;
+        }
+        .btn-circle.btn-lg {
+            width: 50px;
+            height: 50px;
+            padding: 10px 16px;
+            font-size: 18px;
+            line-height: 1.33;
+            border-radius: 25px;
+        }
+        .btn-circle.btn-xl {
+            width: 6rem;
+            height: 6rem;
+            padding: 10px 16px;
+            font-size: 50px;
+            line-height: 1.33;
+            border-radius: 35px;
+        }
+        
     </style>
     <title>Chain Grinder</title>
 </head>
 
-<body class="d-flex flex-column" style="overflow: hidden;">
-    <div class="d-flex justify-content-between ml-3 mr-3" id="statusBar">
-        <button class="btn" style="width:10em" type="button"
-                onclick="powerOff()"><i class="fas fa-power-off" style="width:1.5em; height: 1.5em;"></i></button>
-        <label class="nav-link" id="statusLabel">Ansluter - </label>
-        <label class="nav-link" id="timeLabel"></label>
-    </div>
-    <div id="settingsPage" class="m-flex-1">
-        <div class="d-flex m-flex-1 mt-3">
-            <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="lowerGrinderBtn" type="button"
-                onclick="lowerTapped()">Sänk slip</button>
-            <button class="btn btn-danger m-flex-1 mr-3" id="raiseGrinderBtn" type="button" onclick="liftTapped()">Höj
-                slip</button>
-            <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="angleGrinderBtn" type="button"
-                onclick="alterAngleTapped()">Vinkla slip</button>
+<body class="d-flex flex-column">
+    <div class="background-image"></div>
+    <div class="d-flex flex-column content">
+        <div class="d-flex justify-content-between align-items-center" id="statusBar">
+            <button class="btn" type="button" id="powerOffBtn"
+                    onclick="powerOff()"><i class="fas fa-power-off" style="width:1.5em; height: 1.5em;"></i></button>
+            <label class="nav-link top-bar-label" id="statusLabel">Ansluter - </label>
+            <label class="nav-link top-bar-label" id="timeLabel"></label>
         </div>
-        <div class="d-flex m-flex-1 mt-3">
-            <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="moveChainBtn" type="button"
-                onclick="moveChain()">Putta Kedja</button>
-            <button class="btn btn-primary m-flex-1 mr-3" id="startGrinderBtn" type="button"
-                onclick="startGrinder()">Starta slip</button>
-            <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="stopGrinderBtn" type="button"
-                onclick="stopGrinder()">Stanna slip</button>
-        </div>
-        <div class="d-flex m-flex-1 mt-3">
-            <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="checkLengthGrindingBtn" type="button"
-                onclick="checkLengthGrinding()">Konroll Längdslip</button>
-            <button class="btn btn-danger m-flex-1 mr-3" id="quitCheckLengthGrindingBtn" type="button"
-                onclick="quitCheckLengthGrinding()">Avsluta Kontroll Längdslip</button>
-        </div>
-        <div class="d-flex m-flex-1 mt-3">
-            <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="clapmChainBtn" type="button"
-                onclick="clampChain()">Kläm fast kedja</button>
-            <button class="btn btn-danger m-flex-1 mr-3" id="releaseChainBtn" type="button"
-                onclick="releaseChain()">Släpp
-                kedja</button>
-        </div>
-    </div>
-    <div id="homePage" class="m-flex-1">
-        <div class="d-flex m-flex-1 mr-3 ml-3">
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Antal tänder</span>
+        <div id="settingsPage" class="d-flex m-flex-1 flex-column">
+            <div class="d-flex m-flex-1 flex-row justify-content-between mt-5 ml-5 mr-5 mb-5">
+                <div class="d-flex flex-column justify-content-around align-items-center">
+                    <label class="header-text-size">Slip</label>
+                    <button class="btn btn-primary btn-circle btn-xl" id="lowerGrinderBtn" type="button"
+                        onclick="lowerTapped()">
+                        <i class="fas fa-arrow-up"></i>
+                    </button>
+                    <label class="header-text-size invisible-text">none</label>
+                    <button class="btn btn-danger btn-circle btn-xl" id="raiseGrinderBtn" type="button" onclick="liftTapped()">
+                        <i class="fas fa-arrow-down"></i>
+                    </button>
                 </div>
-                <input type="text" class="form-control use-keyboard-input" id="toothInput" placeholder="Antal tänder">
-                <div class="input-group-append">
-                    <button class="btn btn-success m-flex-1 mr-3" type="button" id="toothInputOK"
-                        onclick="setNumberOfTooths()">Tillämpa</button>
+                <div class="d-flex flex-column justify-content-around align-items-center">
+                    <label class="header-text-size">Slip</label>
+                    <button class="btn btn-primary btn-circle btn-xl" id="startGrinderBtn" type="button"
+                        onclick="startGrinder()">
+                        <i class="far fa-check-circle"></i>
+                    </button>
+                    <label class="header-text-size invisible-text">none</label>
+                    <button class="btn btn-danger btn-circle btn-xl" id="stopGrinderBtn" type="button"
+                        onclick="stopGrinder()">
+                        <i class="far fa-times-circle"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-column justify-content-around align-items-center">
+                    <label class="header-text-size">Klämma</label>
+                    <button class="btn btn-primary btn-circle btn-xl" id="clapmChainBtn" type="button"
+                        onclick="clampChain()">
+                        <i class="far fa-check-circle"></i>
+                    </button>
+                    <label class="header-text-size invisible-text">none</label>
+                    <button class="btn btn-danger btn-circle btn-xl" id="releaseChainBtn" type="button"
+                        onclick="releaseChain()">
+                        <i class="far fa-times-circle"></i>
+                    </button>
+                    
+                </div>
+                <div class="d-flex flex-column justify-content-around align-items-center">
+                    <label class="header-text-size">Kontroll Längdslip</label>
+                    <button class="btn btn-primary btn-circle btn-xl" id="checkLengthGrindingBtn" type="button"
+                        onclick="checkLengthGrinding()">
+                        <i class="far fa-check-circle"></i>
+                    </button>
+                    <label class="header-text-size invisible-text">none</label>
+                    <button class="btn btn-danger btn-circle btn-xl" id="quitCheckLengthGrindingBtn" type="button"
+                        onclick="quitCheckLengthGrinding()">
+                        <i class="far fa-times-circle"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-column justify-content-around align-items-center">
+                    <label class="header-text-size" >Putta</label>
+                    <button class="btn btn-primary btn-circle btn-xl" id="moveChainBtn" type="button"
+                        onclick="moveChain()">
+                        <i class="fas fa-angle-double-left"></i>
+                    </button>
+                    <label class="header-text-size" >Vinkla</label>
+                    <button class="btn btn-primary btn-circle btn-xl" id="angleGrinderBtn" type="button"
+                    onclick="alterAngleTapped()">
+                        <i class="fas fa-exchange-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <!--<div class="d-flex flex-column m-flex-1 mt-3">
+                <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="lowerGrinderBtn" type="button"
+                    onclick="lowerTapped()">Sänk slip</button>
+                <button class="btn btn-danger m-flex-1 mr-3" id="raiseGrinderBtn" type="button" onclick="liftTapped()">Höj
+                    slip</button>
+                <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="angleGrinderBtn" type="button"
+                    onclick="alterAngleTapped()">Vinkla slip</button>
+            </div>
+            <div class="d-flex flex-column m-flex-1 mt-3">
+                <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="moveChainBtn" type="button"
+                    onclick="moveChain()">Putta Kedja</button>
+                <button class="btn btn-primary m-flex-1 mr-3" id="startGrinderBtn" type="button"
+                    onclick="startGrinder()">Starta slip</button>
+                <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="stopGrinderBtn" type="button"
+                    onclick="stopGrinder()">Stanna slip</button>
+            </div>
+            <div class="d-flex m-flex-1 mt-3">
+                <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="checkLengthGrindingBtn" type="button"
+                    onclick="checkLengthGrinding()">Konroll Längdslip</button>
+                <button class="btn btn-danger m-flex-1 mr-3" id="quitCheckLengthGrindingBtn" type="button"
+                    onclick="quitCheckLengthGrinding()">Avsluta Kontroll Längdslip</button>
+            </div>
+            <div class="d-flex m-flex-1 mt-3">
+                <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="clapmChainBtn" type="button"
+                    onclick="clampChain()">Kläm fast kedja</button>
+                <button class="btn btn-danger m-flex-1 mr-3" id="releaseChainBtn" type="button"
+                    onclick="releaseChain()">Släpp
+                    kedja</button>
+            </div>--->
+        </div>
+        <div id="homePage" class="m-flex-1">
+            <div class="d-flex m-flex-1 mr-3 ml-3">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Antal tänder</span>
+                    </div>
+                    <input type="text" class="form-control use-keyboard-input" id="toothInput" placeholder="Antal tänder">
+                    <div class="input-group-append">
+                        <button class="btn btn-success m-flex-1 mr-3" type="button" id="toothInputOK"
+                            onclick="setNumberOfTooths()">Tillämpa</button>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
+                <label class="btn btn-secondary active">
+                    <input type="checkbox" id="checkbox" onclick="checkboxClicked()"> Använd Längdslipning
+                  </label>
+            </div>
+            <div class="d-flex m-flex-1 mt-3">
+                <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="cancelBtn" type="button"
+                    onclick="stop()">Avbryt</button>
+                <button class="btn btn-success m-flex-1 mr-3" id="startBtn" type="button" onclick="start()">Starta</button>
+            </div>
+            <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
+                <div class="input-group-prepend m-flex-1 mr-5">
+                    <span class="input-group-text" id="totalTooths">Totalt antal tänder: </span>
+                </div>
+                <div class="input-group-prepend m-flex-1">
+                    <span class="input-group-text" id="toothsLeft">Antal tänder kvar: </span>
                 </div>
             </div>
         </div>
-        <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
-            <label class="btn btn-secondary active">
-                <input type="checkbox" id="checkbox" onclick="checkboxClicked()"> Använd Längdslipning
-              </label>
-        </div>
-        <div class="d-flex m-flex-1 mt-3">
-            <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="cancelBtn" type="button"
-                onclick="stop()">Avbryt</button>
-            <button class="btn btn-success m-flex-1 mr-3" id="startBtn" type="button" onclick="start()">Starta</button>
-        </div>
-        <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
-            <div class="input-group-prepend m-flex-1 mr-5">
-                <span class="input-group-text" id="totalTooths">Totalt antal tänder: </span>
+        <nav class="navbar navbar-light" id="bottomNav">
+            <div class="d-flex flex-row m-flex-1" id="navbarNav">
+                <button class="btn btn-success m-flex-1 mr-5" type="button" onclick="settingsTapped()">Manuell
+                    Kontroll</button>
+                <button class="btn btn-success m-flex-1" type="button" onclick="homeTapped()">Automatisk Slipning</button>
             </div>
-            <div class="input-group-prepend m-flex-1">
-                <span class="input-group-text" id="toothsLeft">Antal tänder kvar: </span>
-            </div>
-        </div>
+        </nav>
     </div>
-    </div>
-    <nav class="navbar navbar-light" style="background-color: #e3f2fd;">
-        <div class="d-flex flex-row m-flex-1" id="navbarNav">
-            <button class="btn btn-success m-flex-1 mr-5" type="button" onclick="settingsTapped()">Manuell
-                Kontroll</button>
-            <button class="btn btn-success m-flex-1" type="button" onclick="homeTapped()">Automatisk Slipning</button>
-        </div>
-    </nav>
     <script type="text/javascript">
         let socket
         const statusLabel = document.getElementById('statusLabel')
