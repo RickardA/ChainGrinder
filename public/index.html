@@ -32,8 +32,21 @@
             width: 100%;
             background-position: center;
             background-image: url('./oregon_logo.png');
-            filter: blur(7px);
             
+            
+            }
+
+            .background-image-darkener {
+            position: fixed;
+            left: 0;
+            right: 0;
+            z-index: 3;
+            display: block;
+            background-repeat: no-repeat;
+            height: 100%;
+            width: 100%;
+            background-position: center;
+            background-color: #000000cc;
             }
 
             .content {
@@ -88,6 +101,11 @@
             height: 100%;
         }
 
+        #homePageMargins {
+            margin-left: 6rem;
+            margin-right: 6rem;
+        }
+
         .btn-circle {
             width: 30px;
             height: 30px;
@@ -120,6 +138,7 @@
 
 <body class="d-flex flex-column">
     <div class="background-image"></div>
+    <div class="background-image-darkener"></div>
     <div class="d-flex flex-column content">
         <div class="d-flex justify-content-between align-items-center" id="statusBar">
             <button class="btn" type="button" id="powerOffBtn"
@@ -192,7 +211,7 @@
             </div>
         </div>
         <div id="homePage" class="d-flex m-flex-1 flex-column">
-            <div class="d-flex m-flex-1 flex-row justify-content-between mt-5 ml-5 mr-5 mb-5">
+            <div class="d-flex m-flex-1 flex-row justify-content-between mt-5 mb-5" id="homePageMargins">
                 <div class="d-flex flex-column justify-content-around align-items-center">
                     <label class="header-text-size">Längdslipning</label>
                     <button class="btn btn-primary btn-circle btn-xl" id="lengthGrindingOnButton" type="button" onclick="checkboxClicked(true)">
@@ -217,7 +236,7 @@
                 </div>
                 <div class="d-flex flex-column justify-content-around align-items-center">
                     <label class="header-text-size">Antal tänder</label>
-                    <input type="text" id="toothInput" class="btn btn-primary btn-circle btn-xl use-keyboard-input" style="font-size: 33px;" type="button">
+                    <input type="text" id="toothInput" class="btn btn-primary btn-circle btn-xl use-keyboard-input" style="font-size: 33px;" value="" type="button">
                     </input>
                     <label class="header-text-size">Tänder kvar</label>
                     <button class="btn btn-primary btn-circle btn-xl" style="font-size: 33px;" id="toothsLeft" type="button"></button>
