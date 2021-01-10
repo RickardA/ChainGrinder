@@ -1,4 +1,4 @@
-require('dotenv').config( /*{ path: '/home/pi/ChainGrinder/.env' } */)
+require('dotenv').config( { path: '/home/pi/ChainGrinder/.env' } )
 const express = require('express')
 const app = express()
 const Program = require('./classes/Program')
@@ -17,7 +17,7 @@ app.listen(3000, () => {
 
 
 const socket = new Socket()
-//const program = new Program()
+const program = new Program()
 
 socket.on('message',(msg) => {
     handleCommand(msg)

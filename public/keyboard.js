@@ -34,10 +34,8 @@ const Keyboard = {
         // Automatically use keyboard for elements with .use-keyboard-input
         document.querySelectorAll(".use-keyboard-input").forEach(element => {
             element.addEventListener("focus", () => {
-                console.log("element: ", element)
                 this.open(element.value, currentValue => {
                     element.value = currentValue;
-                    element.oninput(element)
                 });
             });
         });
@@ -127,13 +125,15 @@ const Keyboard = {
                     break;
 
                 default:
-                    keyElement.textContent = key.toLowerCase();
-
-                    keyElement.addEventListener("click", () => {
-                        this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
-                        this._triggerEvent("oninput");
-                    });
-
+                    
+                        keyElement.textContent = key.toLowerCase();
+    
+                        keyElement.addEventListener("click", () => {
+                            if(this.properties.value.length < 3) {
+                                this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+                                this._triggerEvent("oninput");
+                            }
+                        });
                     break;
             }
 
@@ -171,10 +171,14 @@ const Keyboard = {
     },
 
     close() {
+        console.log("close")
         this.properties.value = "";
         this.eventHandlers.oninput = oninput;
         this.eventHandlers.onclose = onclose;
         this.elements.main.classList.add("keyboard--hidden");
+        document.querySelectorAll(".use-keyboard-input").forEach(element => {
+            element.onclose()
+        });
     }
 };
 

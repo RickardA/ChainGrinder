@@ -190,38 +190,40 @@
                     </button>
                 </div>
             </div>
-            <!--<div class="d-flex flex-column m-flex-1 mt-3">
-                <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="lowerGrinderBtn" type="button"
-                    onclick="lowerTapped()">Sänk slip</button>
-                <button class="btn btn-danger m-flex-1 mr-3" id="raiseGrinderBtn" type="button" onclick="liftTapped()">Höj
-                    slip</button>
-                <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="angleGrinderBtn" type="button"
-                    onclick="alterAngleTapped()">Vinkla slip</button>
-            </div>
-            <div class="d-flex flex-column m-flex-1 mt-3">
-                <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="moveChainBtn" type="button"
-                    onclick="moveChain()">Putta Kedja</button>
-                <button class="btn btn-primary m-flex-1 mr-3" id="startGrinderBtn" type="button"
-                    onclick="startGrinder()">Starta slip</button>
-                <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="stopGrinderBtn" type="button"
-                    onclick="stopGrinder()">Stanna slip</button>
-            </div>
-            <div class="d-flex m-flex-1 mt-3">
-                <button class="btn btn-primary m-flex-1 ml-3 mr-5" id="checkLengthGrindingBtn" type="button"
-                    onclick="checkLengthGrinding()">Konroll Längdslip</button>
-                <button class="btn btn-danger m-flex-1 mr-3" id="quitCheckLengthGrindingBtn" type="button"
-                    onclick="quitCheckLengthGrinding()">Avsluta Kontroll Längdslip</button>
-            </div>
-            <div class="d-flex m-flex-1 mt-3">
-                <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="clapmChainBtn" type="button"
-                    onclick="clampChain()">Kläm fast kedja</button>
-                <button class="btn btn-danger m-flex-1 mr-3" id="releaseChainBtn" type="button"
-                    onclick="releaseChain()">Släpp
-                    kedja</button>
-            </div>--->
         </div>
-        <div id="homePage" class="m-flex-1">
-            <div class="d-flex m-flex-1 mr-3 ml-3">
+        <div id="homePage" class="d-flex m-flex-1 flex-column">
+            <div class="d-flex m-flex-1 flex-row justify-content-between mt-5 ml-5 mr-5 mb-5">
+                <div class="d-flex flex-column justify-content-around align-items-center">
+                    <label class="header-text-size">Längdslipning</label>
+                    <button class="btn btn-primary btn-circle btn-xl" id="lengthGrindingOnButton" type="button" onclick="checkboxClicked(true)">
+                        <i class="far fa-check-circle"></i>
+                    </button>
+                    <label class="header-text-size invisible-text">none</label>
+                    <button class="btn btn-danger btn-circle btn-xl" id="lengthGrindingOffButton" type="button"
+                        onclick="checkboxClicked(false)">
+                        <i class="far fa-times-circle"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-column justify-content-around align-items-center">
+                    <label class="header-text-size">Start</label>
+                    <button class="btn btn-primary btn-circle btn-xl" id="startBtn" type="button" onclick="start()">
+                        <i class="far fa-check-circle"></i>
+                    </button>
+                    <label class="header-text-size">Stop</label>
+                    <button class="btn btn-danger btn-circle btn-xl" id="cancelBtn" type="button"
+                        onclick="stop()">
+                        <i class="far fa-times-circle"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-column justify-content-around align-items-center">
+                    <label class="header-text-size">Antal tänder</label>
+                    <input type="text" id="toothInput" class="btn btn-primary btn-circle btn-xl use-keyboard-input" style="font-size: 33px;" type="button">
+                    </input>
+                    <label class="header-text-size">Tänder kvar</label>
+                    <button class="btn btn-primary btn-circle btn-xl" style="font-size: 33px;" id="toothsLeft" type="button"></button>
+                </div>
+            </div>
+            <!--<div class="d-flex m-flex-1 mr-3 ml-3">
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Antal tänder</span>
@@ -239,9 +241,9 @@
                   </label>
             </div>
             <div class="d-flex m-flex-1 mt-3">
-                <button class="btn btn-danger m-flex-1 ml-3 mr-5" id="cancelBtn" type="button"
-                    onclick="stop()">Avbryt</button>
-                <button class="btn btn-success m-flex-1 mr-3" id="startBtn" type="button" onclick="start()">Starta</button>
+                <button class="btn btn-danger btn-circle btn-xl ml-3 mr-5" id="cancelBtn" type="button"
+                    onclick="stop()"><i class="far fa-times-circle"></i></button>
+                <button class="btn btn-success btn-circle btn.xl mr-3" id="startBtn" type="button" onclick="start()"><i class="far fa-check-circle"></i></button>
             </div>
             <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
                 <div class="input-group-prepend m-flex-1 mr-5">
@@ -250,14 +252,14 @@
                 <div class="input-group-prepend m-flex-1">
                     <span class="input-group-text" id="toothsLeft">Antal tänder kvar: </span>
                 </div>
-            </div>
+            </div> -->
         </div>
         <nav class="navbar navbar-light d-flex justify-content-around mb-5" id="bottomNav">
             <div class="d-flex flex-row justify-content-around ">
-                <button class="btn btn-primary btn-circle btn-lg mr-5"><i class="fas fa-arrow-left"></i></button>
-                <label class="header-text-size mr-3" style="padding: 10px">Manuell Kontroll</label>
-                <label class="header-text-size ml-3" style="padding: 10px">Automatisk Slipning</label>
-                <button class="btn btn-primary btn-circle btn-lg ml-5"><i class="fas fa-arrow-right"></i></button>
+                <button class="btn btn-primary btn-circle btn-lg mr-5" id="leftMenuBtn" onclick="leftMenuBtnPressed()"><i class="fas fa-arrow-left"></i></button>
+                <label class="header-text-size mr-3" id="manualControlMenuLabel" style="padding: 10px">Manuell Kontroll</label>
+                <label class="header-text-size ml-3" id="autoGridningMenuLabel" style="padding: 10px">Automatisk Slipning</label>
+                <button class="btn btn-primary btn-circle btn-lg ml-5" id="rightMenuBtn" onclick="rightMenuBtnPressed()"><i class="fas fa-arrow-right"></i></button>
             </div>
         </nav> 
         <!--<nav class="navbar navbar-light" id="bottomNav">
@@ -275,8 +277,6 @@
         const settingsPage = document.getElementById('settingsPage')
         const homePage = document.getElementById('homePage')
         const toothInput = document.getElementById('toothInput')
-        const toothInputOK = document.getElementById('toothInputOK')
-        const totalTooths = document.getElementById('totalTooths')
         const toothsLeft = document.getElementById('toothsLeft')
         const lowerGrinderBtn = document.getElementById('lowerGrinderBtn')
         const raiseGrinderBtn = document.getElementById('raiseGrinderBtn')
@@ -291,10 +291,15 @@
         const clapmChainBtn = document.getElementById('clapmChainBtn')
         const releaseChainBtn = document.getElementById('releaseChainBtn')
         const checkbox = document.getElementById('checkbox')
+        const leftMenuBtn = document.getElementById('leftMenuBtn')
+        const rightMenuBtn = document.getElementById('rightMenuBtn')
+        const manualControlMenuLabel = document.getElementById('manualControlMenuLabel')
+        const autoGridningMenuLabel = document.getElementById('autoGridningMenuLabel')
+        const lengthGrindingOffButton = document.getElementById('lengthGrindingOffButton')
+        const lengthGrindingOnButton = document.getElementById('lengthGrindingOnButton')
 
         
-        toothInput.oninput = inputChanged
-        toothInputOK.disabled = true
+        toothInput.onclose = inputChanged
 
         let connected = false
 
@@ -315,7 +320,7 @@
 
         function onLoad() {
             connect()
-            settingsTapped()
+            leftMenuBtnPressed()
             displayCurrentTime()
         }
 
@@ -403,7 +408,7 @@
             } else {
                 startBtn.disabled = false
             }
-            totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
+            toothInput.innerHTML = `${grinder.settings.totalNumberOfTooths}`
         }
 
         function updateStatusLabel(status) {
@@ -414,12 +419,12 @@
 
         function updateNumberOfToothsLeft(tooths) {
             grinder.numberOfToothsLeft = tooths
-            toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
+            toothsLeft.innerHTML = `${grinder.numberOfToothsLeft}`
         }
 
         function updateSettings(settings) {
             grinder.settings = settings
-            totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
+            toothInput.innerHTML = `${grinder.settings.totalNumberOfTooths}`
         }
 
         function updateEverything(everything) {
@@ -431,16 +436,20 @@
         function updateGUI() {
 			console.log("grind",grinder)
             statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
-            toothsLeft.innerHTML = `Antal tänder kvar: ${grinder.numberOfToothsLeft}`
-            totalTooths.innerHTML = `Totalt antal tänder: ${grinder.settings.totalNumberOfTooths}`
-            checkbox.checked = grinder.settings.lengthGrindingActivated
+            toothsLeft.innerHTML = `${grinder.numberOfToothsLeft}`
+            toothInput.innerHTML = `${grinder.settings.totalNumberOfTooths}`
+            updateLengthGrindingButtons()
             updateButtonsDisabledState()
+        }
+
+        function updateLengthGrindingButtons() {
+            lengthGrindingOnButton.disabled = grinder.settings.lengthGrindingActivated || grinder.status !== 'RESTING'
+            lengthGrindingOffButton.disabled = !grinder.settings.lengthGrindingActivated || grinder.status !== 'RESTING'
         }
 
         function updateButtonsDisabledState() {
             updateSetupButtons()
             if (grinder.status !== 'RESTING') {
-                checkbox.disabled = true
                 startBtn.disabled = true
                 if (grinder.status !== 'GRINDING') {
                     console.log("Disable  cancel button: ", grinder.status)
@@ -448,7 +457,6 @@
                 } else {
                     cancelBtn.disabled = false
                 }
-                toothInputOK.disabled = true
             } else {
                 if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null) {
                     startBtn.disabled = true
@@ -456,7 +464,6 @@
                     startBtn.disabled = false
                 }
                 cancelBtn.disabled = true
-                checkbox.disabled = false
             }
         }
 
@@ -512,18 +519,15 @@
 
         ////////////////////////////// GUI Stuff //////////////////////////////////////////
 
+        let prevInput = ""
         function inputChanged(e) {
-            console.log('Input changed: ', e.value)
-            if (e.value.length > 0) {
-                toothInputOK.disabled = false
-            } else {
-                toothInputOK.disabled = true
-            }
+            console.log('on close')
+            setNumberOfTooths()
         }
 
-        function checkboxClicked(e) {
-            console.log("Checkbox changed: ", checkbox.checked)
-            socket.send(JSON.stringify({ command: 'LENGTHGRINDINGACTIVE', value: checkbox.checked}))
+        function checkboxClicked(value) {
+            console.log("Checkbox changed: ", e)
+            socket.send(JSON.stringify({ command: 'LENGTHGRINDINGACTIVE', value }))
         }
 
 
@@ -560,35 +564,11 @@
             };
         }
 
-
-        //////////////////////////  Navbar stuff //////////////////////////////////
-
-
-        function settingsTapped() {
-            console.log('Settings tapped')
-            homePage.style.visibility = 'hidden'
-            homePage.style.height = '0'
-            homePage.classList.remove('m-flex-1')
-            settingsPage.style.visibility = 'visible'
-            settingsPage.classList.add('m-flex-1')
-        }
-
-        function homeTapped() {
-            console.log('Home tapped')
-            settingsPage.style.visibility = 'hidden'
-            settingsPage.style.height = '0'
-            settingsPage.classList.remove('m-flex-1')
-            homePage.style.visibility = 'visible'
-            homePage.classList.add('m-flex-1')
-        }
-
         ////////////////////////// Grinder stuff ////////////////////////////////
 
         function setNumberOfTooths() {
             console.log('Number of tooths: ', toothInput.value)
             socket.send(JSON.stringify({ command: 'NUMBEROFTOOTHS', value: parseInt(toothInput.value) }))
-            toothInput.value = ''
-            toothInputOK.disabled = true
         }
 
         function lowerTapped() {
@@ -670,6 +650,35 @@
             socket.send(JSON.stringify({ command: 'SHUTDOWN' }))
         }
 
+        function rightMenuBtnPressed() {
+            settingsPage.style.visibility = 'hidden'
+            settingsPage.style.height = '0'
+            settingsPage.classList.remove('m-flex-1')
+            homePage.style.visibility = 'visible'
+            homePage.classList.add('m-flex-1')
+            homePage.style.height = '100%'
+            manualControlMenuLabel.style.fontSize = "15px"
+            autoGridningMenuLabel.style.fontSize = "20px"
+            autoGridningMenuLabel.style.opacity = "100%"
+            manualControlMenuLabel.style.opacity = "50%"
+            leftMenuBtn.disabled = false
+            rightMenuBtn.disabled = true
+        }
+
+        function leftMenuBtnPressed() {
+            homePage.style.visibility = 'hidden'
+            homePage.style.height = '0'
+            homePage.classList.remove('m-flex-1')
+            settingsPage.style.visibility = 'visible'
+            settingsPage.classList.add('m-flex-1')
+            settingsPage.style.height = '100%'
+            manualControlMenuLabel.style.fontSize = "20px"
+            autoGridningMenuLabel.style.fontSize = "15px"
+            autoGridningMenuLabel.style.opacity = "50%"
+            manualControlMenuLabel.style.opacity = "100%"
+            leftMenuBtn.disabled = true
+            rightMenuBtn.disabled = false
+        }
 
     </script>
     <script src="keyboard.js"></script>
