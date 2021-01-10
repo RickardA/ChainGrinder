@@ -370,7 +370,7 @@
                     break;
                 case 'LENGTHGRINDINGACTIVATED':
                     grinder.settings.lengthGrindingActivated = msg.val
-                    checkbox.checked = msg.val
+                    updateLengthGrindingButtons()
             }
         }
 
@@ -438,17 +438,18 @@
             statusLabel.innerHTML = connected ? `Ansluten - ${getStatusMsg()}` : 'Ansluter...'
             toothsLeft.innerHTML = `${grinder.numberOfToothsLeft}`
             toothInput.innerHTML = `${grinder.settings.totalNumberOfTooths}`
-            updateLengthGrindingButtons()
             updateButtonsDisabledState()
         }
 
         function updateLengthGrindingButtons() {
+			console.log('update length grinding buttons')
             lengthGrindingOnButton.disabled = grinder.settings.lengthGrindingActivated || grinder.status !== 'RESTING'
             lengthGrindingOffButton.disabled = !grinder.settings.lengthGrindingActivated || grinder.status !== 'RESTING'
         }
 
         function updateButtonsDisabledState() {
             updateSetupButtons()
+            updateLengthGrindingButtons()
             if (grinder.status !== 'RESTING') {
                 startBtn.disabled = true
                 if (grinder.status !== 'GRINDING') {
@@ -457,13 +458,15 @@
                 } else {
                     cancelBtn.disabled = false
                 }
+                toothInput.disabled = true
             } else {
-                if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null) {
+                if (grinder.settings.totalNumberOfTooths === 0 || grinder.settings.totalNumberOfTooths == null || grinder.chainClamped || grinder.grinderLowered || grinder.grinderOn || grinder.pushingChain || grinder.lenghtGrinderActive) {
                     startBtn.disabled = true
                 } else {
                     startBtn.disabled = false
                 }
                 cancelBtn.disabled = true
+                toothInput.disabled = false
             }
         }
 
@@ -526,7 +529,6 @@
         }
 
         function checkboxClicked(value) {
-            console.log("Checkbox changed: ", e)
             socket.send(JSON.stringify({ command: 'LENGTHGRINDINGACTIVE', value }))
         }
 
