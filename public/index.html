@@ -61,7 +61,7 @@
             color: white;
             background-color: #212121;
             box-shadow: 1px 3px 10px black;
-            height: 3.5rem;
+            height: 50px;
         }
 
         label {
@@ -141,13 +141,13 @@
     <div class="background-image-darkener"></div>
     <div class="d-flex flex-column content">
         <div class="d-flex justify-content-between align-items-center" id="statusBar">
-            <button class="btn" type="button" id="powerOffBtn"
+            <button class="btn btn-danger" type="button" id="powerOffBtn"
                     onclick="powerOff()"><i class="fas fa-power-off" style="width:1.5em; height: 1.5em;"></i></button>
             <label class="nav-link top-bar-label" id="statusLabel">Ansluter - </label>
             <label class="nav-link top-bar-label" id="timeLabel"></label>
         </div>
         <div id="settingsPage" class="d-flex m-flex-1 flex-column">
-            <div class="d-flex m-flex-1 flex-row justify-content-between mt-5 ml-5 mr-5 mb-5">
+            <div class="d-flex m-flex-1 flex-row justify-content-between mt-3 ml-5 mr-5 mb-3">
                 <div class="d-flex flex-column justify-content-around align-items-center">
                     <label class="header-text-size">Slip</label>
                     <button class="btn btn-primary btn-circle btn-xl" id="raiseGrinderBtn" type="button" onclick="liftTapped()">
@@ -211,7 +211,7 @@
             </div>
         </div>
         <div id="homePage" class="d-flex m-flex-1 flex-column">
-            <div class="d-flex m-flex-1 flex-row justify-content-between mt-5 mb-5" id="homePageMargins">
+            <div class="d-flex m-flex-1 flex-row justify-content-between mt-3 mb-3" id="homePageMargins">
                 <div class="d-flex flex-column justify-content-around align-items-center">
                     <label class="header-text-size">Längdslipning</label>
                     <button class="btn btn-primary btn-circle btn-xl" id="lengthGrindingOnButton" type="button" onclick="checkboxClicked(true)">
@@ -242,38 +242,8 @@
                     <button class="btn btn-primary btn-circle btn-xl" style="font-size: 33px;" id="toothsLeft" type="button"></button>
                 </div>
             </div>
-            <!--<div class="d-flex m-flex-1 mr-3 ml-3">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Antal tänder</span>
-                    </div>
-                    <input type="text" class="form-control use-keyboard-input" id="toothInput" placeholder="Antal tänder">
-                    <div class="input-group-append">
-                        <button class="btn btn-success m-flex-1 mr-3" type="button" id="toothInputOK"
-                            onclick="setNumberOfTooths()">Tillämpa</button>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
-                <label class="btn btn-secondary active">
-                    <input type="checkbox" id="checkbox" onclick="checkboxClicked()"> Använd Längdslipning
-                  </label>
-            </div>
-            <div class="d-flex m-flex-1 mt-3">
-                <button class="btn btn-danger btn-circle btn-xl ml-3 mr-5" id="cancelBtn" type="button"
-                    onclick="stop()"><i class="far fa-times-circle"></i></button>
-                <button class="btn btn-success btn-circle btn.xl mr-3" id="startBtn" type="button" onclick="start()"><i class="far fa-check-circle"></i></button>
-            </div>
-            <div class="d-flex m-flex-1 mt-3 ml-3 mr-3">
-                <div class="input-group-prepend m-flex-1 mr-5">
-                    <span class="input-group-text" id="totalTooths">Totalt antal tänder: </span>
-                </div>
-                <div class="input-group-prepend m-flex-1">
-                    <span class="input-group-text" id="toothsLeft">Antal tänder kvar: </span>
-                </div>
-            </div> -->
         </div>
-        <nav class="navbar navbar-light d-flex justify-content-around mb-5" id="bottomNav">
+        <nav class="navbar navbar-light d-flex justify-content-around mb-3" id="bottomNav">
             <div class="d-flex flex-row justify-content-around ">
                 <button class="btn btn-primary btn-circle btn-lg mr-5" id="leftMenuBtn" onclick="leftMenuBtnPressed()"><i class="fas fa-arrow-left"></i></button>
                 <label class="header-text-size mr-3" id="manualControlMenuLabel" style="padding: 10px">Manuell Kontroll</label>
@@ -281,13 +251,6 @@
                 <button class="btn btn-primary btn-circle btn-lg ml-5" id="rightMenuBtn" onclick="rightMenuBtnPressed()"><i class="fas fa-arrow-right"></i></button>
             </div>
         </nav> 
-        <!--<nav class="navbar navbar-light" id="bottomNav">
-            <div class="d-flex flex-row m-flex-1" id="navbarNav">
-                <button class="btn btn-primary m-flex-1 mr-5" type="button" onclick="settingsTapped()">Manuell
-                    Kontroll</button>
-                <button class="btn btn-primary m-flex-1" type="button" onclick="homeTapped()">Automatisk Slipning </button>
-            </div>
-        </nav> --->
     </div>
     <script type="text/javascript">
         let socket
