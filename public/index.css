@@ -1,0 +1,120 @@
+.m-flex-1 {
+    flex: 1
+}
+
+body{
+    background-color: #000421e8;
+    overflow: hidden;
+}
+
+.background-image {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    display: block;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-image: url('./oregon_logo.png');
+    
+    
+    }
+
+    .background-image-darkener {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    display: block;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
+    background-position: center;
+    background-color: #000000cc;
+    }
+
+    .content {
+    height: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+}
+
+#statusBar {
+    color: white;
+    background-color: #212121;
+    box-shadow: 1px 3px 10px black;
+    height: 50px;
+}
+
+label {
+    margin: 0;
+}
+
+#powerOffBtn {
+    width:10em;
+    color:white;
+}
+
+#bottomNav {
+    color: white;
+    height: 3.5rem;
+}
+
+label {
+    color: white;
+    text-align: center;
+}
+
+.header-text-size {
+    font-size: 20px;
+}
+
+.invisible-text {
+    color: #00000000;
+}
+
+.top-bar-label {
+    font-size: 18px;
+}
+
+html,
+body,
+#settingsPage {
+    height: 100%;
+}
+
+#homePageMargins {
+    margin-left: 6rem;
+    margin-right: 6rem;
+}
+
+.btn-circle {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    padding: 6px 0;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 15px;
+}
+.btn-circle.btn-lg {
+    width: 50px;
+    height: 50px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.33;
+    border-radius: 25px;
+}
+.btn-circle.btn-xl {
+    width: 6rem;
+    height: 6rem;
+    padding: 10px 16px;
+    font-size: 50px;
+    line-height: 1.33;
+    border-radius: 35px;
+}
+
