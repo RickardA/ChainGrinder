@@ -122,8 +122,8 @@ function updateSetupButtons () {
     moveChainBtn.disabled = grinder.pushingChain || grinder.chainClamped || grinder.lenghtGrinderActive || grinder.grinderLowered
     startGrinderBtn.disabled = grinder.grinderOn || grinder.grinderLowered
     stopGrinderBtn.disabled = !grinder.grinderOn
-    lowerGrinderBtn.disabled = grinder.grinderLowered
-    raiseGrinderBtn.disabled = !grinder.grinderLowered
+    lowerGrinderBtn.disabled = false
+    raiseGrinderBtn.disabled = false
     clapmChainBtn.disabled = grinder.chainClamped || grinder.pushingChain
     releaseChainBtn.disabled = !grinder.chainClamped
 }

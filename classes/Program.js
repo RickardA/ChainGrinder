@@ -94,6 +94,18 @@ module.exports = class Program extends EventEmitter {
         await this.grinder.lower()
         setStatus('RESTING')
     }
+    
+    manualLowerGrinder() {
+		setStatus('LOWERING')
+        this.grinder.manualLower()
+        setStatus('RESTING')
+	}
+	
+	manualLiftGrinder() {
+		setStatus('LOWERING')
+        this.grinder.manualLift()
+        setStatus('RESTING')
+	}
 
     async startGrinder() {
         setStatus('STARTINGGRIDNER')

@@ -20,8 +20,8 @@ module.exports = class Grinder {
     }
     
     stop() {
-		this.liftRelay.toggleOff()
-        this.motorRelay.toggleOff()
+		this.lift()
+        this.turnOff()
 	}
 
     turnOn() {
@@ -42,6 +42,7 @@ module.exports = class Grinder {
         console.log('Stopping grinder')
         return new Promise((resolve, reject) => {
             this.motorRelay.toggleOff()
+            globals.setGrinderOn(false)
             resolve(globals.setGrinderOn(false))
         })
     }
@@ -60,6 +61,11 @@ module.exports = class Grinder {
              this.liftRelay.toggleOn()
         })
     }
+    
+    manualLower() {
+		this.liftRelay.toggleOn()
+		globals.setGrinderLowered(true)
+	}
 
     lift() {
         console.log('Lifting grinder')
@@ -74,6 +80,11 @@ module.exports = class Grinder {
              })
         })
     }
+    
+    manualLift() {
+		this.liftRelay.toggleOff()
+		globals.setGrinderLowered(false)
+	}
 
     isLowered() {
         return this.liftRelay.isToggledOn()
