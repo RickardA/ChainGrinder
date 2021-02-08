@@ -33,10 +33,10 @@ process.on('SIGINT', () => {
 async function handleCommand(msg) {
     switch (msg.command) {
         case 'LOWER':
-            program.lowerGrinder()
+            program.manualLowerGrinder()
             break;
         case 'LIFT':
-            program.liftGrinder()
+            program.manualLiftGrinder()
             break;
         case 'ALTER ANGLE':
             program.alterGrinderAngle()

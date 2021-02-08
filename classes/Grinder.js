@@ -61,6 +61,11 @@ module.exports = class Grinder {
              this.liftRelay.toggleOn()
         })
     }
+    
+    manualLower() {
+		this.liftRelay.toggleOn()
+		globals.setGrinderLowered(true)
+	}
 
     lift() {
         console.log('Lifting grinder')
@@ -75,6 +80,11 @@ module.exports = class Grinder {
              })
         })
     }
+    
+    manualLift() {
+		this.liftRelay.toggleOff()
+		globals.setGrinderLowered(false)
+	}
 
     isLowered() {
         return this.liftRelay.isToggledOn()
