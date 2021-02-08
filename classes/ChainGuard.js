@@ -74,8 +74,11 @@ module.exports = class ChainGuard{
             this.pushChainInput.on('alert', async (level, input) => {
                 console.log(level)
                 if(level === 1) {
-                    await this.moveBackPusher()
-                    resolve(this.pushChainInput.removeAllListeners('alert'))
+					setTimeout(async () => {
+						await this.moveBackPusher()
+						resolve(this.pushChainInput.removeAllListeners('alert'))
+					}, 2000)
+                    
                 }
             })
         })
