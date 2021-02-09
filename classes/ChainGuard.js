@@ -77,7 +77,7 @@ module.exports = class ChainGuard{
 					setTimeout(async () => {
 						await this.moveBackPusher()
 						resolve(this.pushChainInput.removeAllListeners('alert'))
-					}, 2000)
+					}, 500)
                     
                 }
             })
