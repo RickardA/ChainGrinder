@@ -21,6 +21,10 @@ module.exports = class ChainGuard{
 		this.pushRelay.toggleOff()
         this.clampRelay.toggleOff()
         this.moveRelay.toggleOff()
+        
+        globals.setChainClamped(false)
+        globals.setLenghtGrinderActiveState(false)
+        globals.setChainPusherState(false)
 	}
 
     clampChain() {
